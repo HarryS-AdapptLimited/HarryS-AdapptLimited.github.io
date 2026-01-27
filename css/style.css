@@ -1,0 +1,270 @@
+/* ============================================
+   CSS Variables & Reset
+   ============================================ */
+:root {
+    --bg-color: #0d0d0d;
+    --text-color: #f0f0f0;
+    --border-color: #f0f0f0;
+    --border-width: 1px;
+    --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-family);
+}
+
+/* ============================================
+   Search Button (Top Right)
+   ============================================ */
+.search-button {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 100;
+    background: transparent;
+    border: var(--border-width) solid var(--border-color);
+    color: var(--text-color);
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.search-button:hover,
+.search-button:focus {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+}
+
+.search-button svg {
+    display: block;
+}
+
+/* ============================================
+   4x4 Grid Layout
+   ============================================ */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    grid-template-areas:
+        "c0 c1 c2 c3"
+        "c4 center center c5"
+        "c6 center center c7"
+        "c8 c9 c10 c11";
+    height: 100vh;
+    width: 100vw;
+}
+
+.grid-cell {
+    border: var(--border-width) solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--text-color);
+    padding: 1rem;
+    text-align: center;
+    transition: background-color 0.2s ease;
+    font-size: clamp(0.875rem, 2vw, 1rem);
+}
+
+.grid-cell:hover:not(.center-cell) {
+    background-color: rgba(240, 240, 240, 0.1);
+}
+
+/* Position each cell in the grid */
+.grid-cell[data-position="0"] { grid-area: c0; }
+.grid-cell[data-position="1"] { grid-area: c1; }
+.grid-cell[data-position="2"] { grid-area: c2; }
+.grid-cell[data-position="3"] { grid-area: c3; }
+.grid-cell[data-position="4"] { grid-area: c4; }
+.grid-cell[data-position="5"] { grid-area: c5; }
+.grid-cell[data-position="6"] { grid-area: c6; }
+.grid-cell[data-position="7"] { grid-area: c7; }
+.grid-cell[data-position="8"] { grid-area: c8; }
+.grid-cell[data-position="9"] { grid-area: c9; }
+.grid-cell[data-position="10"] { grid-area: c10; }
+.grid-cell[data-position="11"] { grid-area: c11; }
+
+/* Center merged cell (2x2) */
+.center-cell {
+    grid-area: center;
+    flex-direction: column;
+    cursor: default;
+}
+
+.center-cell h1 {
+    font-size: clamp(1.5rem, 5vw, 3rem);
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+}
+
+.center-cell p {
+    font-size: clamp(0.75rem, 2vw, 1rem);
+    opacity: 0.8;
+    font-weight: 300;
+}
+
+/* ============================================
+   Search Modal
+   ============================================ */
+.search-modal {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(13, 13, 13, 0.95);
+    z-index: 200;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 15vh;
+}
+
+.search-modal[hidden] {
+    display: none;
+}
+
+.search-modal-content {
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+}
+
+.search-close {
+    position: absolute;
+    top: -2rem;
+    right: 0;
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    font-size: 2rem;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.search-close:hover {
+    opacity: 0.7;
+}
+
+.search-input {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.25rem;
+    background: transparent;
+    border: var(--border-width) solid var(--border-color);
+    color: var(--text-color);
+    font-family: var(--font-family);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--text-color);
+}
+
+.search-input::placeholder {
+    color: rgba(240, 240, 240, 0.5);
+}
+
+.search-results {
+    margin-top: 1rem;
+    max-height: 50vh;
+    overflow-y: auto;
+}
+
+.search-result-item {
+    display: block;
+    padding: 1rem;
+    border: var(--border-width) solid var(--border-color);
+    border-top: none;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.search-result-item:first-child {
+    border-top: var(--border-width) solid var(--border-color);
+}
+
+.search-result-item:hover {
+    background-color: rgba(240, 240, 240, 0.1);
+}
+
+.search-result-item h3 {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.search-result-item p {
+    font-size: 0.875rem;
+    opacity: 0.7;
+}
+
+.search-no-results {
+    padding: 1rem;
+    text-align: center;
+    opacity: 0.7;
+}
+
+/* ============================================
+   Mobile Responsive (2-column layout)
+   ============================================ */
+@media (max-width: 768px) {
+    html, body {
+        overflow: auto;
+    }
+
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto;
+        grid-template-areas:
+            "center center"
+            "c0 c1"
+            "c2 c3"
+            "c4 c5"
+            "c6 c7"
+            "c8 c9"
+            "c10 c11";
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .center-cell {
+        padding: 3rem 1rem;
+    }
+
+    .grid-cell:not(.center-cell) {
+        min-height: 120px;
+    }
+}
+
+/* ============================================
+   Small mobile adjustments
+   ============================================ */
+@media (max-width: 480px) {
+    .center-cell h1 {
+        font-size: 1.75rem;
+    }
+
+    .center-cell p {
+        font-size: 0.875rem;
+    }
+
+    .grid-cell:not(.center-cell) {
+        min-height: 100px;
+        font-size: 0.875rem;
+    }
+}

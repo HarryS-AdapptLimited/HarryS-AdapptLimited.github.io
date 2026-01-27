@@ -1,0 +1,161 @@
+/* ============================================
+   Post Page Layout
+   ============================================ */
+.post-page {
+    overflow: auto;
+}
+
+.post-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: var(--bg-color);
+    border-bottom: var(--border-width) solid var(--border-color);
+    z-index: 50;
+}
+
+.back-link {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 1rem;
+    transition: opacity 0.2s ease;
+}
+
+.back-link:hover {
+    opacity: 0.7;
+}
+
+.post-header .search-button {
+    position: static;
+}
+
+/* ============================================
+   Post Content Area
+   ============================================ */
+.post-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 6rem 1.5rem 3rem;
+}
+
+.post-content {
+    line-height: 1.7;
+}
+
+.post-content .loading {
+    text-align: center;
+    opacity: 0.7;
+}
+
+/* ============================================
+   Markdown Rendered Content
+   ============================================ */
+.post-content h1 {
+    font-size: 2.5rem;
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.02em;
+}
+
+.post-content h2 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: var(--border-width) solid var(--border-color);
+}
+
+.post-content h3 {
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+}
+
+.post-content p {
+    margin-bottom: 1.25rem;
+}
+
+.post-content a {
+    color: var(--text-color);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.post-content a:hover {
+    opacity: 0.7;
+}
+
+.post-content ul,
+.post-content ol {
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+}
+
+.post-content li {
+    margin-bottom: 0.5rem;
+}
+
+.post-content blockquote {
+    border-left: 3px solid var(--border-color);
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+    opacity: 0.85;
+    font-style: italic;
+}
+
+.post-content code {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    background-color: rgba(240, 240, 240, 0.1);
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-size: 0.9em;
+}
+
+.post-content pre {
+    background-color: rgba(240, 240, 240, 0.05);
+    border: var(--border-width) solid var(--border-color);
+    padding: 1rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+}
+
+.post-content pre code {
+    background: none;
+    padding: 0;
+}
+
+.post-content img {
+    max-width: 100%;
+    height: auto;
+    margin: 1.5rem 0;
+    border: var(--border-width) solid var(--border-color);
+}
+
+.post-content hr {
+    border: none;
+    border-top: var(--border-width) solid var(--border-color);
+    margin: 2rem 0;
+}
+
+/* ============================================
+   Error State
+   ============================================ */
+.post-error {
+    text-align: center;
+    padding: 3rem;
+}
+
+.post-error h1 {
+    margin-bottom: 1rem;
+}
+
+.post-error a {
+    color: var(--text-color);
+}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stanyer.space</title>
+    <meta name="description" content="Things I like and stuff I've made">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <button class="search-button" id="searchButton" aria-label="Search">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="M21 21l-4.35-4.35"></path>
+        </svg>
+    </button>
+
+    <main class="grid-container">
+        <!-- Row 1 -->
+        <a href="#" class="grid-cell" data-position="0"></a>
+        <a href="#" class="grid-cell" data-position="1"></a>
+        <a href="#" class="grid-cell" data-position="2"></a>
+        <a href="#" class="grid-cell" data-position="3"></a>
+
+        <!-- Row 2 -->
+        <a href="#" class="grid-cell" data-position="4"></a>
+        <div class="grid-cell center-cell">
+            <h1>Stanyer.space</h1>
+            <p>Things I like and stuff I've made</p>
+        </div>
+        <a href="#" class="grid-cell" data-position="5"></a>
+
+        <!-- Row 3 -->
+        <a href="#" class="grid-cell" data-position="6"></a>
+        <a href="#" class="grid-cell" data-position="7"></a>
+
+        <!-- Row 4 -->
+        <a href="#" class="grid-cell" data-position="8"></a>
+        <a href="#" class="grid-cell" data-position="9"></a>
+        <a href="#" class="grid-cell" data-position="10"></a>
+        <a href="#" class="grid-cell" data-position="11"></a>
+    </main>
+
+    <!-- Search Modal -->
+    <div class="search-modal" id="searchModal" hidden>
+        <div class="search-modal-content">
+            <button class="search-close" id="searchClose" aria-label="Close search">&times;</button>
+            <input type="text" class="search-input" id="searchInput" placeholder="Search posts..." autofocus>
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/search.js"></script>
+</body>
+</html>

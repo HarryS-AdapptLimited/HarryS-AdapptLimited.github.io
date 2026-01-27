@@ -1,0 +1,11 @@
+{
+    "posts": [
+        {
+            "id": "example-post",
+            "title": "Example Post",
+            "date": "2026-01-27",
+            "excerpt": "This is an example blog post to demonstrate the system.",
+            "file": "posts/example-post.md"
+        }
+    ]
+}

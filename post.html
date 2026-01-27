@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading... - Stanyer.space</title>
+    <meta name="description" content="">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/post.css">
+</head>
+<body class="post-page">
+    <header class="post-header">
+        <a href="index.html" class="back-link">&larr; Back</a>
+        <button class="search-button" id="searchButton" aria-label="Search">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="M21 21l-4.35-4.35"></path>
+            </svg>
+        </button>
+    </header>
+
+    <main class="post-container">
+        <article class="post-content" id="postContent">
+            <p class="loading">Loading...</p>
+        </article>
+    </main>
+
+    <!-- Search Modal (same as index) -->
+    <div class="search-modal" id="searchModal" hidden>
+        <div class="search-modal-content">
+            <button class="search-close" id="searchClose" aria-label="Close search">&times;</button>
+            <input type="text" class="search-input" id="searchInput" placeholder="Search posts..." autofocus>
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </div>
+
+    <!-- Marked.js for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="js/post.js"></script>
+    <script src="js/search.js"></script>
+</body>
+</html>
