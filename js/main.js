@@ -26,9 +26,25 @@
         posts.forEach((post, index) => {
             if (index < cells.length) {
                 const cell = cells[index];
-                cell.href = `post.html?id=${post.id}`;
-                cell.textContent = post.title;
+                cell.href = `?id=${post.id}`;
                 cell.setAttribute('data-post-id', post.id);
+
+                // Create title element
+                const title = document.createElement('span');
+                title.className = 'cell-title';
+                title.textContent = post.title;
+                cell.appendChild(title);
+
+                // Create description element if excerpt exists
+                if (post.excerpt) {
+                    const desc = document.createElement('span');
+                    desc.className = 'cell-description';
+                    desc.textContent = post.excerpt;
+                    cell.appendChild(desc);
+                }
+
+                // Add click handler for SPA navigation
+                cell.addEventListener('click', handleCellClick);
             }
         });
 
@@ -36,6 +52,25 @@
         for (let i = posts.length; i < cells.length; i++) {
             cells[i].removeAttribute('href');
             cells[i].style.pointerEvents = 'none';
+        }
+    }
+
+    // Handle grid cell click for SPA navigation
+    function handleCellClick(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Trigger wave effect from click position
+        if (typeof GridTrail !== 'undefined' && GridTrail.triggerWave) {
+            GridTrail.triggerWave(e.clientX, e.clientY);
+        }
+
+        const postId = this.dataset.postId || e.currentTarget.dataset.postId;
+        if (postId && typeof Router !== 'undefined' && Router.navigateToPost) {
+            Router.navigateToPost(postId);
+        } else {
+            // Fallback - navigate with query param
+            window.location.href = `?id=${postId}`;
         }
     }
 

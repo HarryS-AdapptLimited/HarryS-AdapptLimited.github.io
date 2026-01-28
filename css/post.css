@@ -38,7 +38,7 @@
    Post Content Area
    ============================================ */
 .post-container {
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
     padding: 6rem 1.5rem 3rem;
 }
@@ -112,14 +112,14 @@
 
 .post-content code {
     font-family: 'SF Mono', 'Fira Code', monospace;
-    background-color: rgba(240, 240, 240, 0.1);
+    background-color: var(--hover-bg);
     padding: 0.2em 0.4em;
     border-radius: 3px;
     font-size: 0.9em;
 }
 
 .post-content pre {
-    background-color: rgba(240, 240, 240, 0.05);
+    background-color: var(--hover-bg);
     border: var(--border-width) solid var(--border-color);
     padding: 1rem;
     overflow-x: auto;
@@ -142,6 +142,51 @@
     border: none;
     border-top: var(--border-width) solid var(--border-color);
     margin: 2rem 0;
+}
+
+/* ============================================
+   Mermaid Diagrams
+   ============================================ */
+.mermaid-diagram {
+    margin: 1.5rem 0;
+    text-align: center;
+    overflow-x: auto;
+}
+
+.mermaid-diagram svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* ============================================
+   Two Column Layout
+   ============================================ */
+.two-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin: 1.5rem 0;
+}
+
+.two-column .column ul {
+    margin-bottom: 0;
+}
+
+.two-column .column p strong {
+    display: block;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.two-column .column p:first-child strong {
+    margin-top: 0;
+}
+
+@media (max-width: 600px) {
+    .two-column {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
 }
 
 /* ============================================

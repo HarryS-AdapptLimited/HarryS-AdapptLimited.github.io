@@ -6,16 +6,39 @@
     <title>Stanyer.space</title>
     <meta name="description" content="Things I like and stuff I've made">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/post.css">
 </head>
 <body>
-    <button class="search-button" id="searchButton" aria-label="Search">
+    <!-- Back button (hidden on homepage) -->
+    <a href="/" class="back-button" id="backButton" hidden aria-label="Back to home">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="11" cy="11" r="8"></circle>
-            <path d="M21 21l-4.35-4.35"></path>
+            <path d="M19 12H5"></path>
+            <path d="M12 19l-7-7 7-7"></path>
         </svg>
-    </button>
+    </a>
 
-    <main class="grid-container">
+    <div class="top-buttons">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <!-- Sun icon (shown in dark mode) -->
+            <svg class="icon-sun" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="5"></circle>
+                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+            </svg>
+            <!-- Moon icon (shown in light mode) -->
+            <svg class="icon-moon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
+        <button class="search-button" id="searchButton" aria-label="Search">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="M21 21l-4.35-4.35"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Homepage Grid View -->
+    <main class="grid-container" id="homeView">
         <!-- Row 1 -->
         <a href="#" class="grid-cell" data-position="0"></a>
         <a href="#" class="grid-cell" data-position="1"></a>
@@ -41,6 +64,15 @@
         <a href="#" class="grid-cell" data-position="11"></a>
     </main>
 
+    <!-- Post View (hidden by default) -->
+    <main class="post-view" id="postView" hidden>
+        <div class="post-container">
+            <article class="post-content" id="postContent">
+                <p class="loading">Loading...</p>
+            </article>
+        </div>
+    </main>
+
     <!-- Search Modal -->
     <div class="search-modal" id="searchModal" hidden>
         <div class="search-modal-content">
@@ -50,6 +82,13 @@
         </div>
     </div>
 
+    <!-- Marked.js for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Mermaid.js for diagrams -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/cursor-trail.js"></script>
+    <script src="js/router.js"></script>
     <script src="js/main.js"></script>
     <script src="js/search.js"></script>
 </body>

@@ -100,11 +100,29 @@
             searchResults.innerHTML = '<p class="search-no-results">No posts found</p>';
         } else {
             searchResults.innerHTML = matches.map(post => `
-                <a href="post.html?id=${post.id}" class="search-result-item">
+                <a href="?id=${post.id}" class="search-result-item" data-post-id="${post.id}">
                     <h3>${escapeHtml(post.title)}</h3>
                     ${post.excerpt ? `<p>${escapeHtml(post.excerpt)}</p>` : ''}
                 </a>
             `).join('');
+
+            // Add click handlers for SPA navigation
+            searchResults.querySelectorAll('.search-result-item').forEach(link => {
+                link.addEventListener('click', handleResultClick);
+            });
+        }
+    }
+
+    // Handle search result click for SPA navigation
+    function handleResultClick(e) {
+        e.preventDefault();
+        const postId = e.currentTarget.dataset.postId;
+        closeSearch();
+        if (typeof Router !== 'undefined' && Router.navigateToPost) {
+            Router.navigateToPost(postId);
+        } else {
+            // Fallback for standalone post.html
+            window.location.href = `post.html?id=${postId}`;
         }
     }
 
