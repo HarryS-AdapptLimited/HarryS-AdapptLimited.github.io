@@ -185,8 +185,17 @@ const GridTrail = (function() {
         });
     }
 
+    // Check if we're currently viewing the gallery
+    function isInGallery() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('id') === 'gallery';
+    }
+
     // Handle click to trigger wave
     function handleClick(e) {
+        // Disable wave effect when in gallery
+        if (isInGallery()) return;
+
         triggerWave(e.clientX, e.clientY);
     }
 

@@ -67,6 +67,14 @@ const Router = (function() {
     // Handle back button click
     function handleBackClick(e) {
         e.preventDefault();
+
+        // Check if gallery handles the back action internally
+        if (getPostIdFromUrl() === 'gallery' && typeof Gallery !== 'undefined' && Gallery.isInNestedView()) {
+            if (Gallery.handleBack()) {
+                return; // Gallery handled it
+            }
+        }
+
         navigateToHome();
     }
 
@@ -126,6 +134,11 @@ const Router = (function() {
     async function showHome(pushState) {
         if (currentView === 'home') return;
 
+        // Reset gallery state if we were viewing it
+        if (typeof Gallery !== 'undefined') {
+            Gallery.reset();
+        }
+
         // Update URL if needed
         if (pushState) {
             history.pushState({}, '', window.location.pathname);
@@ -171,6 +184,13 @@ const Router = (function() {
     async function loadPostContent(postId) {
         postContent.innerHTML = '<p class="loading">Loading...</p>';
 
+        // Special handling for gallery
+        if (postId === 'gallery') {
+            document.title = 'Gallery - Stanyer.space';
+            await Gallery.render(postContent);
+            return;
+        }
+
         try {
             // Find post metadata
             const postMeta = postsData.find(post => post.id === postId);
@@ -191,6 +211,9 @@ const Router = (function() {
 
             // Render markdown to HTML
             postContent.innerHTML = marked.parse(markdown);
+
+            // Process images for lazy loading
+            processImages();
 
             // Process any Mermaid diagrams
             await renderMermaidDiagrams();
@@ -216,6 +239,32 @@ const Router = (function() {
     // Helper: delay promise
     function delay(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    // Process images for lazy loading with fade-in effect
+    function processImages() {
+        const images = postContent.querySelectorAll('img');
+
+        images.forEach(img => {
+            // Add lazy loading attribute
+            img.loading = 'lazy';
+
+            // Add class for styling
+            img.classList.add('lazy-image');
+
+            // Handle load event for fade-in
+            if (img.complete) {
+                img.classList.add('loaded');
+            } else {
+                img.addEventListener('load', () => {
+                    img.classList.add('loaded');
+                });
+
+                img.addEventListener('error', () => {
+                    img.classList.add('error');
+                });
+            }
+        });
     }
 
     // Render Mermaid diagrams in post content
