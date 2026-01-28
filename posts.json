@@ -15,11 +15,11 @@
             "file": "posts/gallery.md"
         },
         {
-            "id": "CV",
+            "id": "cv",
             "title": "CV",
             "date": "2026-01-27",
-            "excerpt": "A collection of images and videos.",
-            "file": "posts/CV.md"
+            "excerpt": "Harry Stanyer's curriculum vitae.",
+            "file": "posts/cv.md"
         }
     ]
 }
