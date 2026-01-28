@@ -14,7 +14,7 @@
 
     // Fetch post metadata from posts.json
     async function getPostMeta(postId) {
-        const response = await fetch('posts.json');
+        const response = await fetch('/posts.json');
         if (!response.ok) throw new Error('Failed to load posts manifest');
 
         const data = await response.json();
@@ -43,8 +43,9 @@
             // Update page title
             document.title = `${postMeta.title} - Stanyer.space`;
 
-            // Fetch markdown content
-            const response = await fetch(postMeta.file);
+            // Fetch markdown content (ensure absolute path)
+            const filePath = postMeta.file.startsWith('/') ? postMeta.file : '/' + postMeta.file;
+            const response = await fetch(filePath);
             if (!response.ok) throw new Error('Failed to load post content');
 
             const markdown = await response.text();

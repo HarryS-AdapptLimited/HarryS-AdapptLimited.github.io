@@ -38,7 +38,7 @@ const Router = (function() {
     // Load posts.json data
     async function loadPostsData() {
         try {
-            const response = await fetch('posts.json');
+            const response = await fetch('/posts.json');
             if (response.ok) {
                 const data = await response.json();
                 postsData = data.posts;
@@ -203,8 +203,9 @@ const Router = (function() {
             // Update page title
             document.title = `${postMeta.title} - Stanyer.space`;
 
-            // Fetch markdown content
-            const response = await fetch(postMeta.file);
+            // Fetch markdown content (ensure absolute path)
+            const filePath = postMeta.file.startsWith('/') ? postMeta.file : '/' + postMeta.file;
+            const response = await fetch(filePath);
             if (!response.ok) throw new Error('Failed to load post content');
 
             const markdown = await response.text();

@@ -9,7 +9,7 @@
     // Fetch and populate grid with posts
     async function loadPosts() {
         try {
-            const response = await fetch('posts.json');
+            const response = await fetch('/posts.json');
             if (!response.ok) throw new Error('Failed to load posts');
 
             const data = await response.json();

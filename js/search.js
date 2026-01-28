@@ -22,7 +22,7 @@
 
         // Load posts data
         try {
-            const response = await fetch('posts.json');
+            const response = await fetch('/posts.json');
             if (response.ok) {
                 const data = await response.json();
                 posts = data.posts;

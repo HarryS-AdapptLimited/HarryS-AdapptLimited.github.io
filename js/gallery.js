@@ -70,7 +70,7 @@ const Gallery = (function() {
         if (galleryData) return galleryData;
 
         try {
-            const response = await fetch('gallery.json');
+            const response = await fetch('/gallery.json');
             if (!response.ok) throw new Error('Failed to load gallery data');
             galleryData = await response.json();
             return galleryData;

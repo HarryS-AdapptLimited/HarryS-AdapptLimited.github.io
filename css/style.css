@@ -66,6 +66,14 @@ body {
     text-decoration: none;
 }
 
+/* Explicitly override link colors for home button */
+.home-button,
+.home-button:link,
+.home-button:visited,
+.home-button:active {
+    color: var(--text-color);
+}
+
 .search-button:hover,
 .search-button:focus,
 .theme-toggle:hover,
@@ -80,6 +88,11 @@ body {
 .theme-toggle svg,
 .home-button svg {
     display: block;
+}
+
+/* Ensure SVG stroke color matches text color */
+.home-button svg {
+    stroke: currentColor;
 }
 
 /* Theme toggle icons */
