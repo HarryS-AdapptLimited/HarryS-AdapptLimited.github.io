@@ -1,5 +1,5 @@
 /**
- * Theme toggle for Stanyer.space
+ * Theme toggle for Harry Stanyer
  * Switches between dark and light mode
  */
 

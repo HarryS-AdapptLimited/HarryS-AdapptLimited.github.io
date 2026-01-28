@@ -1,34 +1,56 @@
 {
     "collections": [
         {
-            "id": "sample-collection",
-            "name": "Sample Collection",
-            "description": "A sample collection to demonstrate the gallery functionality with images and video.",
+            "id": "koh-tao-sunset",
+            "name": "Koh Tao Sunset",
+            "description": "A collection of images from my time in Koh Tao.",
             "images": [
                 {
                     "url": "https://media.harrystanyer.com/cdn-cgi/image/width=1600,quality=75,format=auto/_DSC4340.JPG",
-                    "description": "Mountain peaks at sunrise",
-                    "location": "Swiss Alps",
-                    "date": "2024-06-15"
+                    "description": "Sunset over the ocean",
+                    "location": "Koh Tao, Thailand",
+                    "date": "2025-10-20"
                 },
                 {
                     "url": "https://media.harrystanyer.com/cdn-cgi/image/width=1600,quality=75,format=auto/_DSC4354.JPG",
-                    "description": "Misty forest morning",
-                    "location": "Pacific Northwest",
-                    "date": "2024-05-20"
+                    "description": "Sunset over the ocean",
+                    "location": "Koh Tao, Thailand",
+                    "date": "2025-10-20"
                 },
                 {
                     "url": "https://media.harrystanyer.com/cdn-cgi/image/width=1600,quality=75,format=auto/_DSC4376.JPG",
-                    "description": "Calm lake reflections",
-                    "location": "Lake District, UK",
-                    "date": "2024-04-10"
-                },
+                    "description": "Sunset over the ocean",
+                    "location": "Koh Tao, Thailand",
+                    "date": "2025-10-21"
+                }
+            ]
+        },
+        {
+            "id": "cycle-touring-through-asia",
+            "name": "Cycle-touring through Asia",
+            "description": "A collection of images and videos from my time cycle-touring through Asia.",
+            "images": [
                 {
                     "type": "video",
-                    "url": "https://www.youtube.com/embed/O9Qpz6dI9zg?si=GcDAtBBT6M90xzGq",
+                    "url": "https://media.harrystanyer.com/Bike_rencoded.mp4",
                     "thumbnail": "",
                     "description": "Sample video",
                     "location": "Sample Video",
+                    "date": "2024-05-25"
+                }
+            ]
+        },
+        {
+            "id": "sawmill-works",
+            "name": "Sawmill Works",
+            "description": "A collection of images and videos from my time working on Sawmill Works.",
+            "images": [
+                {
+                    "type": "video",
+                    "url": "https://media.harrystanyer.com/HoldMaking.webm",
+                    "thumbnail": "",
+                    "description": "One of my first attempts at creating a video for a climbing hold brand that I was creating at the time. Nothing ever came from this but I learned a lot along the way.",
+                    "location": "Manchester, UK",
                     "date": "2024-05-25"
                 }
             ]

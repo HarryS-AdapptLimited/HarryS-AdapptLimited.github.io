@@ -1,5 +1,5 @@
 /**
- * Post page JavaScript for Stanyer.space
+ * Post page JavaScript for Harry Stanyer
  * Fetches and renders Markdown content
  */
 
@@ -41,7 +41,7 @@
             }
 
             // Update page title
-            document.title = `${postMeta.title} - Stanyer.space`;
+            document.title = `${postMeta.title} - Harry Stanyer`;
 
             // Fetch markdown content (ensure absolute path)
             const filePath = postMeta.file.startsWith('/') ? postMeta.file : '/' + postMeta.file;
@@ -68,7 +68,7 @@
                 <p><a href="index.html">Return home</a></p>
             </div>
         `;
-        document.title = 'Error - Stanyer.space';
+        document.title = 'Error - Harry Stanyer';
     }
 
     // Initialize on DOM ready

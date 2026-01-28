@@ -1,5 +1,5 @@
 /**
- * Grid trail effect for Stanyer.space
+ * Grid trail effect for Harry Stanyer
  * Creates a grid of cells that light up when the mouse passes over them
  */
 

@@ -1,5 +1,5 @@
 /**
- * Main JavaScript for Stanyer.space homepage
+ * Main JavaScript for Harry Stanyer homepage
  * Handles grid population from posts.json
  */
 

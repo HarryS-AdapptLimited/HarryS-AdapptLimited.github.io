@@ -1,5 +1,5 @@
 /**
- * SPA Router for Stanyer.space
+ * SPA Router for Harry Stanyer
  * Handles page transitions and History API
  */
 
@@ -11,6 +11,7 @@ const Router = (function() {
     let homeView, postView, postContent, backButton;
     let currentView = 'home';
     let postsData = [];
+    let lastCollectionId = null; // Track last collection ID to detect changes
 
     // Initialize router
     function init() {
@@ -27,6 +28,9 @@ const Router = (function() {
 
         // Handle back button click
         backButton.addEventListener('click', handleBackClick);
+
+        // Handle ESC key to go back when not on homepage
+        document.addEventListener('keydown', handleKeyDown);
 
         // Check initial URL for post ID
         const postId = getPostIdFromUrl();
@@ -56,7 +60,7 @@ const Router = (function() {
 
     // Navigate to a post
     function navigateToPost(postId) {
-        showPost(postId, true); // true = push state
+        return showPost(postId, true); // true = push state
     }
 
     // Navigate back to home
@@ -67,7 +71,11 @@ const Router = (function() {
     // Handle back button click
     function handleBackClick(e) {
         e.preventDefault();
+        performBackNavigation();
+    }
 
+    // Perform back navigation (shared by click and ESC key)
+    function performBackNavigation() {
         // Check if gallery handles the back action internally
         if (getPostIdFromUrl() === 'gallery' && typeof Gallery !== 'undefined' && Gallery.isInNestedView()) {
             if (Gallery.handleBack()) {
@@ -76,6 +84,32 @@ const Router = (function() {
         }
 
         navigateToHome();
+    }
+
+    // Handle keyboard events
+    function handleKeyDown(e) {
+        // Only handle ESC when back button is visible (not on homepage)
+        if (e.key === 'Escape' && !backButton.hidden) {
+            // Don't interfere if search modal is open
+            const searchModal = document.getElementById('searchModal');
+            if (searchModal && !searchModal.hidden) {
+                return; // Let search handle ESC
+            }
+
+            // If we're in gallery, check if gallery is in nested view
+            // Only skip if gallery is handling it (nested view), otherwise handle it
+            if (getPostIdFromUrl() === 'gallery' && typeof Gallery !== 'undefined') {
+                // If gallery is in nested view (viewer/grid), let it handle ESC
+                // If in collections view, router should handle ESC to go back to homepage
+                if (Gallery.isInNestedView()) {
+                    return; // Gallery will handle it
+                }
+                // Otherwise, continue to handle ESC (go back to homepage)
+            }
+
+            e.preventDefault();
+            performBackNavigation();
+        }
     }
 
     // Handle browser back/forward
@@ -90,11 +124,35 @@ const Router = (function() {
 
     // Show post view with transition
     async function showPost(postId, pushState) {
-        if (currentView === 'post' && getPostIdFromUrl() === postId) return;
+        const currentPostId = getPostIdFromUrl();
+        const params = new URLSearchParams(window.location.search);
+        const newCollectionId = params.get('collection');
+        
+        // Don't re-render if we're already viewing the same post and collection
+        if (currentView === 'post' && currentPostId === postId) {
+            // Check if collection parameter changed
+            if (newCollectionId === lastCollectionId) {
+                return; // Same collection, no need to re-render
+            }
+            // Collection changed - update tracking and continue to re-render
+            lastCollectionId = newCollectionId;
+        } else {
+            // Update tracking for new navigation
+            lastCollectionId = newCollectionId;
+        }
 
         // Update URL if needed
         if (pushState) {
-            history.pushState({ postId }, '', `?id=${postId}`);
+            // Preserve collection parameter if it exists in current URL
+            const collectionId = params.get('collection');
+            // Only update URL if it's different from current
+            const newUrl = collectionId ? `?id=${postId}&collection=${collectionId}` : `?id=${postId}`;
+            const currentUrl = window.location.search;
+            if (currentUrl !== `?${newUrl.split('?')[1] || newUrl}`) {
+                history.pushState({ postId, collectionId }, '', newUrl);
+            }
+            // Update tracking
+            lastCollectionId = collectionId;
         }
 
         // Fade out home view
@@ -138,6 +196,9 @@ const Router = (function() {
         if (typeof Gallery !== 'undefined') {
             Gallery.reset();
         }
+        
+        // Reset collection tracking
+        lastCollectionId = null;
 
         // Update URL if needed
         if (pushState) {
@@ -160,7 +221,7 @@ const Router = (function() {
         backButton.hidden = true;
 
         // Reset page title
-        document.title = 'Stanyer.space';
+        document.title = 'Harry Stanyer';
 
         // Restore body scroll behavior
         document.body.style.overflow = '';
@@ -186,8 +247,11 @@ const Router = (function() {
 
         // Special handling for gallery
         if (postId === 'gallery') {
-            document.title = 'Gallery - Stanyer.space';
-            await Gallery.render(postContent);
+            document.title = 'Gallery - Harry Stanyer';
+            // Check for collection parameter in URL
+            const params = new URLSearchParams(window.location.search);
+            const collectionId = params.get('collection');
+            await Gallery.render(postContent, collectionId);
             return;
         }
 
@@ -201,7 +265,7 @@ const Router = (function() {
             }
 
             // Update page title
-            document.title = `${postMeta.title} - Stanyer.space`;
+            document.title = `${postMeta.title} - Harry Stanyer`;
 
             // Fetch markdown content (ensure absolute path)
             const filePath = postMeta.file.startsWith('/') ? postMeta.file : '/' + postMeta.file;
@@ -234,7 +298,7 @@ const Router = (function() {
                 <p><a href="/" onclick="event.preventDefault(); Router.navigateToHome();">Return home</a></p>
             </div>
         `;
-        document.title = 'Error - Stanyer.space';
+        document.title = 'Error - Harry Stanyer';
     }
 
     // Helper: delay promise

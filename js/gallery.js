@@ -1,5 +1,5 @@
 /**
- * Gallery Module for Stanyer.space
+ * Gallery Module for Harry Stanyer
  * Handles photo/video collections with three views: collections, viewer, grid
  */
 
@@ -81,12 +81,25 @@ const Gallery = (function() {
     }
 
     // Main render function - called by router
-    async function render(containerElement) {
+    async function render(containerElement, collectionId = null) {
         container = containerElement;
 
         try {
             await loadData();
-            renderCollectionsView();
+            if (collectionId) {
+                // Open collection directly without showing collections list
+                const collection = galleryData.collections.find(c => c.id === collectionId);
+                if (collection) {
+                    currentCollection = collection;
+                    currentImageIndex = 0;
+                    renderViewerView();
+                } else {
+                    // Collection not found, show collections list
+                    renderCollectionsView();
+                }
+            } else {
+                renderCollectionsView();
+            }
         } catch (error) {
             container.innerHTML = `
                 <div class="gallery-error">
@@ -109,6 +122,11 @@ const Gallery = (function() {
 
     // Render collections list view
     function renderCollectionsView() {
+        // If already showing collections view, don't re-render (prevents flash)
+        if (currentView === 'collections' && container && container.querySelector('.gallery-collections')) {
+            return;
+        }
+        
         currentView = 'collections';
         currentCollection = null;
 
@@ -205,6 +223,8 @@ const Gallery = (function() {
             mediaHtml = `<img src="${item.url}" alt="${item.description || ''}" class="gallery-main-image lazy-image">`;
         }
 
+        const hasMultipleItems = currentCollection.images.length > 1;
+        
         const html = `
             <div class="gallery-viewer">
                 <button class="gallery-grid-toggle" aria-label="View grid">
@@ -216,13 +236,13 @@ const Gallery = (function() {
                     </svg>
                 </button>
 
-                <button class="gallery-nav gallery-nav-prev" aria-label="Previous">
+                <button class="gallery-nav gallery-nav-prev" aria-label="Previous" ${!hasMultipleItems ? 'disabled style="opacity: 0.3; pointer-events: none;"' : ''}>
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M15 18l-6-6 6-6"></path>
                     </svg>
                 </button>
 
-                <button class="gallery-nav gallery-nav-next" aria-label="Next">
+                <button class="gallery-nav gallery-nav-next" aria-label="Next" ${!hasMultipleItems ? 'disabled style="opacity: 0.3; pointer-events: none;"' : ''}>
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M9 18l6-6-6-6"></path>
                     </svg>
@@ -261,6 +281,9 @@ const Gallery = (function() {
 
     // Navigate to previous image (loops)
     function prevImage() {
+        // Don't navigate if there's only one item
+        if (currentCollection.images.length <= 1) return;
+        
         currentImageIndex = currentImageIndex === 0
             ? currentCollection.images.length - 1
             : currentImageIndex - 1;
@@ -269,6 +292,9 @@ const Gallery = (function() {
 
     // Navigate to next image (loops)
     function nextImage() {
+        // Don't navigate if there's only one item
+        if (currentCollection.images.length <= 1) return;
+        
         currentImageIndex = currentImageIndex === currentCollection.images.length - 1
             ? 0
             : currentImageIndex + 1;
@@ -385,17 +411,36 @@ const Gallery = (function() {
         const params = new URLSearchParams(window.location.search);
         if (params.get('id') !== 'gallery') return;
 
+        // Handle ESC key - only stop propagation if gallery actually handles it
+        if (e.key === 'Escape') {
+            const handled = handleBack();
+            if (handled) {
+                // Gallery handled it (was in viewer or grid), stop router from handling
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+            }
+            // If not handled (was in collections view), let event propagate to router
+            return;
+        }
+
         switch (e.key) {
             case 'ArrowLeft':
                 if (currentView === 'viewer') {
-                    e.preventDefault();
-                    prevImage();
+                    // Only navigate if there are multiple items
+                    if (currentCollection && currentCollection.images.length > 1) {
+                        e.preventDefault();
+                        prevImage();
+                    }
                 }
                 break;
             case 'ArrowRight':
                 if (currentView === 'viewer') {
-                    e.preventDefault();
-                    nextImage();
+                    // Only navigate if there are multiple items
+                    if (currentCollection && currentCollection.images.length > 1) {
+                        e.preventDefault();
+                        nextImage();
+                    }
                 }
                 break;
             case 'ArrowUp':
@@ -414,15 +459,12 @@ const Gallery = (function() {
                     renderCollectionsView();
                 }
                 break;
-            case 'Escape':
-                e.preventDefault();
-                handleBack();
-                break;
         }
     }
 
     // Initialize keyboard listener
-    document.addEventListener('keydown', handleKeyDown);
+    // Use capture phase to ensure this runs before other handlers
+    document.addEventListener('keydown', handleKeyDown, true);
 
     // Handle back navigation (called by router)
     function handleBack() {
@@ -430,6 +472,10 @@ const Gallery = (function() {
             renderViewerView();
             return true; // Handled internally
         } else if (currentView === 'viewer') {
+            // Remove collection parameter from URL when going back to collections view
+            const url = new URL(window.location);
+            url.searchParams.delete('collection');
+            history.replaceState(history.state, '', url);
             renderCollectionsView();
             return true; // Handled internally
         }
@@ -452,6 +498,7 @@ const Gallery = (function() {
         render,
         handleBack,
         isInNestedView,
-        reset
+        reset,
+        openCollection
     };
 })();
