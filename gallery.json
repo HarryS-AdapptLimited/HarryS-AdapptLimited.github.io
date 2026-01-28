@@ -6,19 +6,19 @@
             "description": "A sample collection to demonstrate the gallery functionality with images and video.",
             "images": [
                 {
-                    "url": "https://media.harrystanyer.com/_DSC4340.JPG",
+                    "url": "https://media.harrystanyer.com/cdn-cgi/image/width=1600,quality=75,format=auto/_DSC4340.JPG",
                     "description": "Mountain peaks at sunrise",
                     "location": "Swiss Alps",
                     "date": "2024-06-15"
                 },
                 {
-                    "url": "https://media.harrystanyer.com/_DSC4354.JPG",
+                    "url": "https://media.harrystanyer.com/cdn-cgi/image/width=1600,quality=75,format=auto/_DSC4354.JPG",
                     "description": "Misty forest morning",
                     "location": "Pacific Northwest",
                     "date": "2024-05-20"
                 },
                 {
-                    "url": "https://media.harrystanyer.com/_DSC4376.JPG",
+                    "url": "https://media.harrystanyer.com/cdn-cgi/image/width=1600,quality=75,format=auto/_DSC4376.JPG",
                     "description": "Calm lake reflections",
                     "location": "Lake District, UK",
                     "date": "2024-04-10"
