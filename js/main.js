@@ -32,8 +32,12 @@
 
             const data = await response.json();
             populateGrid(data.posts);
+            // Initialize keyboard navigation after posts are loaded
+            initKeyboardNav();
         } catch (error) {
             console.error('Error loading posts:', error);
+            // Still initialize keyboard nav even if posts fail to load
+            initKeyboardNav();
         }
     }
 
@@ -195,6 +199,13 @@
         // Don't handle if we're in an input field
         if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
 
+        // Ensure navigable cells are built (in case posts loaded after listener attached)
+        if (navigableCells.length === 0) {
+            buildNavigableCells();
+            // If still no cells, don't handle
+            if (navigableCells.length === 0) return;
+        }
+
         const key = e.key;
 
         // Arrow keys, Enter, Escape
@@ -233,6 +244,15 @@
 
                 // Get current position and find next
                 const currentCell = navigableCells[selectedCellIndex];
+                if (!currentCell) {
+                    // Cell no longer exists, rebuild and select first
+                    buildNavigableCells();
+                    if (navigableCells.length > 0) {
+                        updateSelection(0);
+                    }
+                    return;
+                }
+
                 const currentPos = parseInt(currentCell.dataset.position, 10);
                 const direction = key.replace('Arrow', '').toLowerCase();
                 const newPos = findNextPosition(currentPos, direction);
@@ -252,22 +272,26 @@
         }
     }
 
-    // Initialize keyboard navigation
+    // Initialize keyboard navigation (rebuilds navigable cells)
     function initKeyboardNav() {
         buildNavigableCells();
-        document.addEventListener('keydown', handleKeyDown);
-        document.addEventListener('mousemove', handleMouseMove, { passive: true });
     }
 
-    // Initialize on DOM ready
+    // Initialize keyboard navigation listeners early (before posts load)
+    // This ensures keyboard events are captured even if posts take time to load
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
+            // Attach listeners immediately
+            document.addEventListener('keydown', handleKeyDown);
+            document.addEventListener('mousemove', handleMouseMove, { passive: true });
+            // Then load posts and build navigable cells
             loadPosts();
-            // Wait a tick for posts to populate
-            setTimeout(initKeyboardNav, 100);
         });
     } else {
+        // Attach listeners immediately
+        document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener('mousemove', handleMouseMove, { passive: true });
+        // Then load posts and build navigable cells
         loadPosts();
-        setTimeout(initKeyboardNav, 100);
     }
 })();
