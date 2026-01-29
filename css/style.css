@@ -222,6 +222,22 @@ body {
     margin-bottom: 0.5rem;
     text-transform: uppercase;
     font-family: var(--font-mono);
+    min-height: 1.2em;
+}
+
+.typing-cursor {
+    display: inline-block;
+    animation: blink 1s infinite;
+    margin-left: 0.1em;
+}
+
+@keyframes blink {
+    0%, 50% {
+        opacity: 1;
+    }
+    51%, 100% {
+        opacity: 0;
+    }
 }
 
 .center-cell p {
@@ -479,6 +495,64 @@ body {
 
 .back-button svg {
     display: block;
+}
+
+/* ============================================
+   Breadcrumbs Navigation
+   ============================================ */
+.breadcrumbs {
+    position: fixed;
+    top: 1rem;
+    left: 4rem;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    height: 40px;
+}
+
+.breadcrumbs[hidden] {
+    display: none;
+}
+
+.breadcrumb-item {
+    color: var(--text-color);
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.breadcrumb-item:hover {
+    opacity: 1;
+}
+
+.breadcrumb-separator {
+    opacity: 0.5;
+}
+
+.breadcrumb-current {
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .breadcrumbs {
+        left: 3.5rem;
+        font-size: 0.65rem;
+        max-width: calc(100vw - 10rem);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 480px) {
+    .breadcrumbs {
+        display: none;
+    }
 }
 
 /* ============================================

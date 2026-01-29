@@ -1,11 +1,30 @@
 {
     "posts": [
         {
-            "id": "gallery",
-            "title": "Gallery",
-            "date": "2026-01-27",
-            "excerpt": "A collection of images and videos.",
-            "file": "posts/gallery.md"
+            "id": "map",
+            "title": "Map",
+            "date": "2026-01-29",
+            "excerpt": "Places I've been around the world."
+        },
+        {
+            "id": "photography",
+            "title": "Photography",
+            "date": "2026-01-29",
+            "excerpt": "Photo collections from around the world."
+        },
+        {
+            "id": "videography",
+            "title": "Videography",
+            "date": "2026-01-29",
+            "excerpt": "Video projects and documentaries."
+        },
+        {
+            "id": "photography",
+            "collection": "koh-tao-sunset",
+            "title": "Koh Tao Sunset",
+            "date": "2026-01-29",
+            "excerpt": "Sunset photography from Thailand.",
+            "type": "collection"
         },
         {
             "id": "cv",

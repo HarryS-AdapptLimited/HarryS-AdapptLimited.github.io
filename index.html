@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/post.css">
     <link rel="stylesheet" href="css/gallery.css">
+    <link rel="stylesheet" href="css/map.css">
 </head>
 <body>
     <!-- Back button (hidden on homepage) -->
@@ -18,6 +19,11 @@
             <path d="M12 19l-7-7 7-7"></path>
         </svg>
     </a>
+
+    <!-- Breadcrumbs navigation (hidden on homepage) -->
+    <nav class="breadcrumbs" id="breadcrumbs" hidden aria-label="Breadcrumb navigation">
+        <!-- Populated dynamically by router.js -->
+    </nav>
 
     <div class="top-buttons">
         <a href="/" class="home-button" id="homeButton" aria-label="Go to home">
@@ -66,7 +72,7 @@
             <span class="cell-label">05</span>
         </a>
         <div class="grid-cell center-cell">
-            <h1>Harry Stanyer</h1>
+            <h1 id="typingText"><span id="typedText"></span><span class="typing-cursor">|</span></h1>
             <p>Engineer, photographer and documentary maker.</p>
             <div class="keyboard-hint">
                 <span>Navigate with</span>
@@ -146,6 +152,7 @@
     <script src="js/theme.js"></script>
     <script src="js/cursor-trail.js"></script>
     <script src="js/gallery.js"></script>
+    <script src="js/map.js"></script>
     <script src="js/router.js"></script>
     <script src="js/main.js"></script>
     <script src="js/search.js"></script>

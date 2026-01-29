@@ -8,7 +8,7 @@ const Router = (function() {
 
     const TRANSITION_DURATION = 300; // ms, matches CSS transition
 
-    let homeView, postView, postContent, backButton;
+    let homeView, postView, postContent, backButton, breadcrumbs;
     let currentView = 'home';
     let postsData = [];
     let lastCollectionId = null; // Track last collection ID to detect changes
@@ -19,6 +19,7 @@ const Router = (function() {
         postView = document.getElementById('postView');
         postContent = document.getElementById('postContent');
         backButton = document.getElementById('backButton');
+        breadcrumbs = document.getElementById('breadcrumbs');
 
         // Load posts data
         loadPostsData();
@@ -76,8 +77,9 @@ const Router = (function() {
 
     // Perform back navigation (shared by click and ESC key)
     function performBackNavigation() {
-        // Check if gallery handles the back action internally
-        if (getPostIdFromUrl() === 'gallery' && typeof Gallery !== 'undefined' && Gallery.isInNestedView()) {
+        const postId = getPostIdFromUrl();
+        // Check if gallery handles the back action internally (for gallery, photography, or videography views)
+        if ((postId === 'gallery' || postId === 'photography' || postId === 'videography') && typeof Gallery !== 'undefined' && Gallery.isInNestedView()) {
             if (Gallery.handleBack()) {
                 return; // Gallery handled it
             }
@@ -96,9 +98,10 @@ const Router = (function() {
                 return; // Let search handle ESC
             }
 
-            // If we're in gallery, check if gallery is in nested view
+            // If we're in gallery view, check if gallery is in nested view
             // Only skip if gallery is handling it (nested view), otherwise handle it
-            if (getPostIdFromUrl() === 'gallery' && typeof Gallery !== 'undefined') {
+            const currentPostId = getPostIdFromUrl();
+            if ((currentPostId === 'gallery' || currentPostId === 'photography' || currentPostId === 'videography') && typeof Gallery !== 'undefined') {
                 // If gallery is in nested view (viewer/grid), let it handle ESC
                 // If in collections view, router should handle ESC to go back to homepage
                 if (Gallery.isInNestedView()) {
@@ -120,6 +123,43 @@ const Router = (function() {
         } else {
             showHome(false);
         }
+    }
+
+    // Update breadcrumbs based on current navigation
+    function updateBreadcrumbs(postId, collectionName = null) {
+        if (!breadcrumbs) return;
+
+        let html = '<a href="/" class="breadcrumb-item" onclick="event.preventDefault(); Router.navigateToHome();">Home</a>';
+
+        if (postId) {
+            // Find post title
+            const post = postsData.find(p => p.id === postId || p.id.startsWith(postId));
+            const postTitle = post ? post.title : postId.charAt(0).toUpperCase() + postId.slice(1);
+
+            html += '<span class="breadcrumb-separator">/</span>';
+
+            if (collectionName) {
+                // Post with collection: Home / Gallery / Collection
+                html += `<a href="?id=${postId}" class="breadcrumb-item" onclick="event.preventDefault(); Router.navigateToPost('${postId}');">${postTitle}</a>`;
+                html += '<span class="breadcrumb-separator">/</span>';
+                html += `<span class="breadcrumb-current">${collectionName}</span>`;
+            } else {
+                // Just post: Home / Post Title
+                html += `<span class="breadcrumb-current">${postTitle}</span>`;
+            }
+        }
+
+        breadcrumbs.innerHTML = html;
+    }
+
+    // Show breadcrumbs
+    function showBreadcrumbs() {
+        if (breadcrumbs) breadcrumbs.hidden = false;
+    }
+
+    // Hide breadcrumbs
+    function hideBreadcrumbs() {
+        if (breadcrumbs) breadcrumbs.hidden = true;
     }
 
     // Show post view with transition
@@ -173,6 +213,19 @@ const Router = (function() {
         // Show back button
         backButton.hidden = false;
 
+        // Show and update breadcrumbs
+        showBreadcrumbs();
+        const breadcrumbParams = new URLSearchParams(window.location.search);
+        const breadcrumbCollectionId = breadcrumbParams.get('collection');
+        if (breadcrumbCollectionId && typeof Gallery !== 'undefined' && Gallery.getCollectionName) {
+            // Get collection name from gallery data
+            Gallery.getCollectionName(breadcrumbCollectionId).then(name => {
+                updateBreadcrumbs(postId, name);
+            });
+        } else {
+            updateBreadcrumbs(postId);
+        }
+
         // Allow body scroll for post
         document.body.style.overflow = 'auto';
 
@@ -220,6 +273,9 @@ const Router = (function() {
         // Hide back button
         backButton.hidden = true;
 
+        // Hide breadcrumbs
+        hideBreadcrumbs();
+
         // Reset page title
         document.title = 'Harry Stanyer';
 
@@ -245,13 +301,24 @@ const Router = (function() {
     async function loadPostContent(postId) {
         postContent.innerHTML = '<p class="loading">Loading...</p>';
 
-        // Special handling for gallery
-        if (postId === 'gallery') {
-            document.title = 'Gallery - Harry Stanyer';
+        // Special handling for map
+        if (postId === 'map') {
+            document.title = 'Map - Harry Stanyer';
+            await MapView.render(postContent);
+            return;
+        }
+
+        // Special handling for gallery views (photography/videography)
+        if (postId === 'gallery' || postId === 'photography' || postId === 'videography') {
+            const category = postId === 'photography' ? 'photography' :
+                             postId === 'videography' ? 'videography' : null;
+            const displayTitle = postId === 'photography' ? 'Photography' :
+                                 postId === 'videography' ? 'Videography' : 'Gallery';
+            document.title = `${displayTitle} - Harry Stanyer`;
             // Check for collection parameter in URL
             const params = new URLSearchParams(window.location.search);
             const collectionId = params.get('collection');
-            await Gallery.render(postContent, collectionId);
+            await Gallery.render(postContent, collectionId, category);
             return;
         }
 

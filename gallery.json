@@ -3,6 +3,7 @@
         {
             "id": "koh-tao-sunset",
             "name": "Koh Tao Sunset",
+            "category": "photography",
             "description": "A collection of images from my time in Koh Tao.",
             "images": [
                 {
@@ -28,6 +29,7 @@
         {
             "id": "cycle-touring-through-asia",
             "name": "Cycle-touring through Asia",
+            "category": "videography",
             "description": "A collection of images and videos from my time cycle-touring through Asia.",
             "images": [
                 {
@@ -43,6 +45,7 @@
         {
             "id": "sawmill-works",
             "name": "Sawmill Works",
+            "category": "videography",
             "description": "A collection of images and videos from my time working on Sawmill Works.",
             "images": [
                 {

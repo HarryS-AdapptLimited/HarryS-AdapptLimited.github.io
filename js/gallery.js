@@ -10,6 +10,7 @@ const Gallery = (function() {
     let currentCollection = null;
     let currentImageIndex = 0;
     let currentView = 'collections'; // 'collections' | 'viewer' | 'grid'
+    let currentCategory = null; // 'photography' | 'videography' | null
 
     // Keyboard navigation state
     let selectedCollectionIndex = -1;
@@ -86,8 +87,9 @@ const Gallery = (function() {
     }
 
     // Main render function - called by router
-    async function render(containerElement, collectionId = null) {
+    async function render(containerElement, collectionId = null, category = null) {
         container = containerElement;
+        currentCategory = category; // Store for filtering
 
         try {
             await loadData();
@@ -131,13 +133,19 @@ const Gallery = (function() {
         if (currentView === 'collections' && container && container.querySelector('.gallery-collections')) {
             return;
         }
-        
+
         currentView = 'collections';
         currentCollection = null;
 
         let html = '<div class="gallery-collections">';
 
-        galleryData.collections.forEach(collection => {
+        // Filter collections by category if set
+        let collections = galleryData.collections;
+        if (currentCategory) {
+            collections = collections.filter(c => c.category === currentCategory);
+        }
+
+        collections.forEach(collection => {
             const coverItem = collection.images[0];
             const thumbnailUrl = getThumbnail(coverItem);
             const isVideoItem = isVideo(coverItem);
@@ -477,9 +485,10 @@ const Gallery = (function() {
 
     // Handle keyboard navigation
     function handleKeyDown(e) {
-        // Only handle keys when gallery is active
+        // Only handle keys when gallery is active (gallery, photography, or videography)
         const params = new URLSearchParams(window.location.search);
-        if (params.get('id') !== 'gallery') return;
+        const pageId = params.get('id');
+        if (pageId !== 'gallery' && pageId !== 'photography' && pageId !== 'videography') return;
 
         // Mark keyboard usage
         usingKeyboard = true;
@@ -660,6 +669,14 @@ const Gallery = (function() {
         currentCollection = null;
         currentImageIndex = 0;
         currentView = 'collections';
+        currentCategory = null;
+    }
+
+    // Get collection name by ID (for breadcrumbs)
+    async function getCollectionName(collectionId) {
+        await loadData();
+        const collection = galleryData.collections.find(c => c.id === collectionId);
+        return collection ? collection.name : collectionId;
     }
 
     return {
@@ -667,6 +684,7 @@ const Gallery = (function() {
         handleBack,
         isInNestedView,
         reset,
-        openCollection
+        openCollection,
+        getCollectionName
     };
 })();

@@ -48,8 +48,15 @@
         posts.forEach((post, index) => {
             if (index < cells.length) {
                 const cell = cells[index];
-                cell.href = `?id=${post.id}`;
-                cell.setAttribute('data-post-id', post.id);
+                // Handle collection-type posts with separate collection property
+                if (post.collection) {
+                    cell.href = `?id=${post.id}&collection=${post.collection}`;
+                    cell.setAttribute('data-post-id', post.id);
+                    cell.setAttribute('data-collection-id', post.collection);
+                } else {
+                    cell.href = `?id=${post.id}`;
+                    cell.setAttribute('data-post-id', post.id);
+                }
 
                 // Create title element
                 const title = document.createElement('span');
@@ -88,11 +95,18 @@
         }
 
         const postId = this.dataset.postId || e.currentTarget.dataset.postId;
+        const collectionId = this.dataset.collectionId || e.currentTarget.dataset.collectionId;
+
         if (postId && typeof Router !== 'undefined' && Router.navigateToPost) {
+            // If there's a collection, update URL with collection param before navigating
+            if (collectionId) {
+                history.pushState({}, '', `?id=${postId}&collection=${collectionId}`);
+            }
             Router.navigateToPost(postId);
         } else {
             // Fallback - navigate with query param
-            window.location.href = `?id=${postId}`;
+            const url = collectionId ? `?id=${postId}&collection=${collectionId}` : `?id=${postId}`;
+            window.location.href = url;
         }
     }
 
@@ -277,6 +291,27 @@
         buildNavigableCells();
     }
 
+    // Typing animation for "Harry Stanyer"
+    function initTypingAnimation() {
+        const typedTextElement = document.getElementById('typedText');
+        if (!typedTextElement) return;
+
+        const text = 'Harry Stanyer';
+        const typingSpeed = 100; // milliseconds per character
+        let index = 0;
+
+        function typeCharacter() {
+            if (index < text.length) {
+                typedTextElement.textContent += text[index];
+                index++;
+                setTimeout(typeCharacter, typingSpeed);
+            }
+        }
+
+        // Start typing animation after a short delay
+        setTimeout(typeCharacter, 300);
+    }
+
     // Initialize keyboard navigation listeners early (before posts load)
     // This ensures keyboard events are captured even if posts take time to load
     if (document.readyState === 'loading') {
@@ -284,6 +319,8 @@
             // Attach listeners immediately
             document.addEventListener('keydown', handleKeyDown);
             document.addEventListener('mousemove', handleMouseMove, { passive: true });
+            // Initialize typing animation
+            initTypingAnimation();
             // Then load posts and build navigable cells
             loadPosts();
         });
@@ -291,6 +328,8 @@
         // Attach listeners immediately
         document.addEventListener('keydown', handleKeyDown);
         document.addEventListener('mousemove', handleMouseMove, { passive: true });
+        // Initialize typing animation
+        initTypingAnimation();
         // Then load posts and build navigable cells
         loadPosts();
     }

@@ -1,0 +1,254 @@
+/* ============================================
+   Map Page Styles
+   ============================================ */
+.map-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Map controls */
+.map-controls {
+    position: absolute;
+    top: 5rem;
+    right: 1rem;
+    background: var(--bg-color);
+    border: var(--border-width) solid var(--border-color);
+    padding: 1rem;
+    z-index: 200;
+    min-width: 280px;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.control-group:last-of-type {
+    margin-bottom: 0.5rem;
+}
+
+.control-group label {
+    min-width: 140px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.75rem;
+}
+
+.control-group input[type="range"] {
+    flex: 1;
+    min-width: 80px;
+}
+
+.control-group .number-input {
+    width: 70px;
+    padding: 0.25rem 0.5rem;
+    background: var(--bg-color);
+    border: var(--border-width) solid var(--border-color);
+    color: var(--text-color);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-align: right;
+}
+
+.control-unit {
+    min-width: 20px;
+    font-size: 0.75rem;
+}
+
+.control-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.reset-button {
+    width: 100%;
+    padding: 0.5rem;
+    background: var(--bg-color);
+    border: var(--border-width) solid var(--border-color);
+    color: var(--text-color);
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.reset-button:hover {
+    background-color: var(--hover-bg);
+}
+
+.world-map {
+    width: 100%;
+    height: 100%;
+    display: block;
+    margin: 0;
+}
+
+.world-outline {
+    fill: none;
+    stroke: var(--text-color);
+    stroke-width: 1;
+    opacity: 0.3;
+}
+
+.world-boundaries {
+    fill: none;
+    stroke: var(--text-color);
+    stroke-width: 0.5;
+    opacity: 0.2;
+}
+
+
+/* Location pins */
+.map-pin {
+    pointer-events: all;
+    cursor: pointer;
+}
+
+.map-pin .pin-outer {
+    pointer-events: all;
+}
+
+.map-pin .pin-inner,
+.map-pin .pin-coords {
+    pointer-events: none;
+}
+
+.pin-coords {
+    opacity: 0;
+    pointer-events: none;
+    font-size: 10px;
+    font-family: monospace;
+    fill: #ffff00;
+}
+
+/* Prevent child elements from interfering with hover */
+.map-pin circle,
+.map-pin text {
+    pointer-events: none;
+}
+
+.map-pin .pin-outer {
+    fill: transparent;
+    stroke: var(--text-color);
+    stroke-width: 1.5;
+}
+
+.map-pin .pin-inner {
+    fill: var(--text-color);
+}
+
+.map-pin.has-link .pin-inner {
+    fill: var(--text-color);
+}
+
+
+/* Tooltip */
+.map-tooltip {
+    position: absolute;
+    background: var(--bg-color);
+    border: var(--border-width) solid var(--border-color);
+    padding: 1rem;
+    min-width: 200px;
+    max-width: 300px;
+    z-index: 100;
+    pointer-events: auto;
+}
+
+.map-tooltip[hidden] {
+    display: none;
+}
+
+.tooltip-name {
+    font-size: 1rem;
+    font-weight: 400;
+    margin: 0 0 0.5rem 0;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.tooltip-description {
+    font-size: 0.875rem;
+    opacity: 0.8;
+    margin: 0 0 0.75rem 0;
+    line-height: 1.4;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.tooltip-link {
+    display: inline-block;
+    color: var(--text-color);
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    border: var(--border-width) solid var(--border-color);
+    padding: 0.5rem 1rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.tooltip-link:hover {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+}
+
+.tooltip-link[hidden] {
+    display: none;
+}
+
+/* Map error state */
+.map-error {
+    text-align: center;
+    padding: 3rem;
+}
+
+.map-error h2 {
+    margin-bottom: 1rem;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .map-container {
+        /* Already fullscreen, no changes needed */
+    }
+
+    .world-map {
+        /* Already fullscreen, no changes needed */
+    }
+
+    .map-tooltip {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        top: auto;
+        max-width: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: none;
+    }
+}

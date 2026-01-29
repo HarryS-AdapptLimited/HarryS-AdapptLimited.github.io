@@ -1,0 +1,17 @@
+{
+    "locations": [
+        {
+            "id": "koh-tao",
+            "name": "Koh Tao",
+            "country": "Thailand",
+            "coordinates": { "lat": 10.0956, "lng": 99.8404 },
+            "svgPosition": { "x": 905, "y": 515 },
+            "linkedContent": {
+                "type": "collection",
+                "id": "koh-tao-sunset",
+                "gallery": "photography"
+            },
+            "description": "Island paradise in the Gulf of Thailand"
+        }
+    ]
+}

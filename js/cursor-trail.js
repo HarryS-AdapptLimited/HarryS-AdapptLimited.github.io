@@ -191,12 +191,26 @@ const GridTrail = (function() {
         return params.get('id') === 'gallery';
     }
 
+    // Check if we're currently viewing the map
+    function isInMap() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('id') === 'map';
+    }
+
     // Handle click to trigger wave
     function handleClick(e) {
-        // Disable wave effect when in gallery
-        if (isInGallery()) return;
+        // Disable wave effect when in gallery or map
+        if (isInGallery() || isInMap()) return;
 
         triggerWave(e.clientX, e.clientY);
+    }
+
+    // Handle mouse movement
+    function handleMouseMoveWithCheck(e) {
+        // Disable trail effect when in map
+        if (isInMap()) return;
+        
+        handleMouseMove(e);
     }
 
     // Initialize
@@ -207,7 +221,7 @@ const GridTrail = (function() {
         }
 
         createGrid();
-        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mousemove', handleMouseMoveWithCheck);
         document.addEventListener('click', handleClick);
     }
 
