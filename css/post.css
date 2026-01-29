@@ -24,6 +24,9 @@
     text-decoration: none;
     font-size: 1rem;
     transition: opacity 0.2s ease;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
 }
 
 .back-link:hover {
@@ -45,6 +48,9 @@
 
 .post-content {
     line-height: 1.7;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
 }
 
 .post-content .loading {
@@ -59,7 +65,9 @@
     font-size: 2.5rem;
     font-weight: 300;
     margin-bottom: 1.5rem;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.1em;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
 }
 
 .post-content h2 {
@@ -69,6 +77,9 @@
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
     border-bottom: var(--border-width) solid var(--border-color);
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .post-content h3 {
@@ -76,6 +87,9 @@
     font-weight: 500;
     margin-top: 2rem;
     margin-bottom: 0.75rem;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
 }
 
 .post-content p {
@@ -108,14 +122,19 @@
     margin: 1.5rem 0;
     opacity: 0.85;
     font-style: italic;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
 }
 
 .post-content code {
-    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-family: var(--font-mono);
     background-color: var(--hover-bg);
     padding: 0.2em 0.4em;
     border-radius: 3px;
     font-size: 0.9em;
+    text-transform: none;
+    letter-spacing: 0;
 }
 
 .post-content pre {
@@ -124,11 +143,15 @@
     padding: 1rem;
     overflow-x: auto;
     margin: 1.5rem 0;
+    text-transform: none;
+    letter-spacing: 0;
 }
 
 .post-content pre code {
     background: none;
     padding: 0;
+    text-transform: none;
+    letter-spacing: 0;
 }
 
 .post-content img {
@@ -218,6 +241,9 @@
 
 .post-error h1 {
     margin-bottom: 1rem;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
 }
 
 .post-error a {
@@ -239,7 +265,9 @@
     color: var(--text-color);
     text-decoration: none;
     font-size: 1rem;
-    font-family: var(--font-family);
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
     cursor: pointer;
     transition: background-color 0.2s ease, color 0.2s ease;
 }
