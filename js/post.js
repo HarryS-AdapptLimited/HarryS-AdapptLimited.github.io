@@ -53,9 +53,48 @@
             // Render markdown to HTML
             contentEl.innerHTML = marked.parse(markdown);
 
+            // Add download button for CV page
+            if (postId === 'cv') {
+                addCvDownloadButton(contentEl);
+            }
+
         } catch (error) {
             console.error('Error loading post:', error);
             showError(contentEl, 'Failed to load post');
+        }
+    }
+
+    // Add CV download button
+    function addCvDownloadButton(postContent) {
+        // Check if button already exists
+        if (postContent.querySelector('.cv-download-button')) {
+            return;
+        }
+
+        // Create download button as a link
+        const downloadButton = document.createElement('a');
+        downloadButton.href = '/Harry Stanyer CV.pdf';
+        downloadButton.download = 'Harry Stanyer CV.pdf';
+        downloadButton.className = 'cv-download-button';
+        downloadButton.setAttribute('aria-label', 'Download CV as PDF');
+
+        // Add download icon SVG
+        downloadButton.innerHTML = `
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Download as PDF</span>
+        `;
+
+        // Insert button at the beginning of the post content (after h1)
+        const firstHeading = postContent.querySelector('h1');
+        if (firstHeading) {
+            firstHeading.insertAdjacentElement('afterend', downloadButton);
+        } else {
+            // If no h1, insert at the beginning
+            postContent.insertBefore(downloadButton, postContent.firstChild);
         }
     }
 

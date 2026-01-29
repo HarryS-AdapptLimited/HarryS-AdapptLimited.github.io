@@ -122,6 +122,8 @@ body {
         "c8 c9 c10 c11";
     height: 100vh;
     width: 100vw;
+    gap: 1rem;
+    padding: 1rem;
 }
 
 .grid-cell {
