@@ -21,6 +21,12 @@
     background-color: var(--hover-bg);
 }
 
+.gallery-collection-item.keyboard-focus {
+    background-color: var(--hover-bg);
+    outline: 2px solid var(--text-color);
+    outline-offset: -2px;
+}
+
 .collection-cover {
     flex-shrink: 0;
     width: 300px;
@@ -289,6 +295,13 @@
 .gallery-grid-item:hover {
     transform: scale(1.02);
     border-color: var(--text-color);
+}
+
+.gallery-grid-item.keyboard-focus {
+    transform: scale(1.02);
+    border-color: var(--text-color);
+    outline: 2px solid var(--text-color);
+    outline-offset: 2px;
 }
 
 .gallery-grid-item img {

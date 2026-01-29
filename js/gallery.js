@@ -11,6 +11,11 @@ const Gallery = (function() {
     let currentImageIndex = 0;
     let currentView = 'collections'; // 'collections' | 'viewer' | 'grid'
 
+    // Keyboard navigation state
+    let selectedCollectionIndex = -1;
+    let selectedGridIndex = -1;
+    let usingKeyboard = false;
+
     const TRANSITION_DURATION = 300;
     const VIDEO_EXTENSIONS = ['.mp4', '.webm', '.ogg', '.mov'];
 
@@ -174,8 +179,26 @@ const Gallery = (function() {
             });
         });
 
+        // Reset keyboard selection state
+        selectedCollectionIndex = -1;
+
         // Process lazy loading
         processGalleryImages();
+    }
+
+    // Update collection selection visual
+    function updateCollectionSelection(newIndex) {
+        const items = container.querySelectorAll('.gallery-collection-item');
+
+        items.forEach(item => item.classList.remove('keyboard-focus'));
+
+        if (newIndex >= 0 && newIndex < items.length) {
+            selectedCollectionIndex = newIndex;
+            items[newIndex].classList.add('keyboard-focus');
+            items[newIndex].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        } else {
+            selectedCollectionIndex = -1;
+        }
     }
 
     // Open a collection and show first image
@@ -356,8 +379,55 @@ const Gallery = (function() {
 
         container.querySelector('.gallery-back-to-viewer').addEventListener('click', renderViewerView);
 
+        // Reset keyboard selection state
+        selectedGridIndex = -1;
+
         // Process lazy loading
         processGalleryImages();
+    }
+
+    // Update grid item selection visual
+    function updateGridSelection(newIndex) {
+        const items = container.querySelectorAll('.gallery-grid-item');
+
+        items.forEach(item => item.classList.remove('keyboard-focus'));
+
+        if (newIndex >= 0 && newIndex < items.length) {
+            selectedGridIndex = newIndex;
+            items[newIndex].classList.add('keyboard-focus');
+            items[newIndex].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        } else {
+            selectedGridIndex = -1;
+        }
+    }
+
+    // Get grid dimensions for navigation
+    function getGridDimensions() {
+        const gridContainer = container.querySelector('.gallery-grid-images');
+        if (!gridContainer) return { cols: 1 };
+
+        const items = gridContainer.querySelectorAll('.gallery-grid-item');
+        if (items.length < 2) return { cols: 1 };
+
+        // Calculate columns from actual layout
+        const firstItemRect = items[0].getBoundingClientRect();
+        const secondItemRect = items[1].getBoundingClientRect();
+
+        // If second item is on same row, count columns
+        if (Math.abs(firstItemRect.top - secondItemRect.top) < 10) {
+            let cols = 1;
+            const firstTop = firstItemRect.top;
+            for (let i = 1; i < items.length; i++) {
+                if (Math.abs(items[i].getBoundingClientRect().top - firstTop) < 10) {
+                    cols++;
+                } else {
+                    break;
+                }
+            }
+            return { cols };
+        }
+
+        return { cols: 1 };
     }
 
     // Format date for display
@@ -411,8 +481,23 @@ const Gallery = (function() {
         const params = new URLSearchParams(window.location.search);
         if (params.get('id') !== 'gallery') return;
 
+        // Mark keyboard usage
+        usingKeyboard = true;
+
         // Handle ESC key - only stop propagation if gallery actually handles it
         if (e.key === 'Escape') {
+            // First clear any selection
+            if (currentView === 'collections' && selectedCollectionIndex >= 0) {
+                updateCollectionSelection(-1);
+                e.preventDefault();
+                return;
+            }
+            if (currentView === 'grid' && selectedGridIndex >= 0) {
+                updateGridSelection(-1);
+                e.preventDefault();
+                return;
+            }
+
             const handled = handleBack();
             if (handled) {
                 // Gallery handled it (was in viewer or grid), stop router from handling
@@ -424,37 +509,108 @@ const Gallery = (function() {
             return;
         }
 
+        // Handle Enter key
+        if (e.key === 'Enter') {
+            if (currentView === 'collections' && selectedCollectionIndex >= 0) {
+                e.preventDefault();
+                const items = container.querySelectorAll('.gallery-collection-item');
+                if (items[selectedCollectionIndex]) {
+                    const collectionId = items[selectedCollectionIndex].dataset.collectionId;
+                    openCollection(collectionId);
+                }
+                return;
+            }
+            if (currentView === 'grid' && selectedGridIndex >= 0) {
+                e.preventDefault();
+                currentImageIndex = selectedGridIndex;
+                renderViewerView();
+                return;
+            }
+        }
+
         switch (e.key) {
             case 'ArrowLeft':
+                e.preventDefault();
                 if (currentView === 'viewer') {
                     // Only navigate if there are multiple items
                     if (currentCollection && currentCollection.images.length > 1) {
-                        e.preventDefault();
                         prevImage();
+                    }
+                } else if (currentView === 'grid') {
+                    // Navigate grid left
+                    const gridItems = container.querySelectorAll('.gallery-grid-item');
+                    if (selectedGridIndex < 0 && gridItems.length > 0) {
+                        updateGridSelection(0);
+                    } else if (selectedGridIndex > 0) {
+                        updateGridSelection(selectedGridIndex - 1);
                     }
                 }
                 break;
             case 'ArrowRight':
+                e.preventDefault();
                 if (currentView === 'viewer') {
                     // Only navigate if there are multiple items
                     if (currentCollection && currentCollection.images.length > 1) {
-                        e.preventDefault();
                         nextImage();
+                    }
+                } else if (currentView === 'grid') {
+                    // Navigate grid right
+                    const gridItems = container.querySelectorAll('.gallery-grid-item');
+                    if (selectedGridIndex < 0 && gridItems.length > 0) {
+                        updateGridSelection(0);
+                    } else if (selectedGridIndex < gridItems.length - 1) {
+                        updateGridSelection(selectedGridIndex + 1);
                     }
                 }
                 break;
             case 'ArrowUp':
                 e.preventDefault();
-                if (currentView === 'viewer') {
+                if (currentView === 'collections') {
+                    // Navigate collections up
+                    const collectionItems = container.querySelectorAll('.gallery-collection-item');
+                    if (selectedCollectionIndex < 0 && collectionItems.length > 0) {
+                        updateCollectionSelection(0);
+                    } else if (selectedCollectionIndex > 0) {
+                        updateCollectionSelection(selectedCollectionIndex - 1);
+                    }
+                } else if (currentView === 'viewer') {
                     renderGridView();
                 } else if (currentView === 'grid') {
-                    renderViewerView();
+                    // Navigate grid up
+                    const { cols } = getGridDimensions();
+                    const gridItems = container.querySelectorAll('.gallery-grid-item');
+                    if (selectedGridIndex < 0 && gridItems.length > 0) {
+                        updateGridSelection(0);
+                    } else if (selectedGridIndex >= cols) {
+                        updateGridSelection(selectedGridIndex - cols);
+                    } else {
+                        // At top row, switch to viewer
+                        renderViewerView();
+                    }
                 }
                 break;
             case 'ArrowDown':
                 e.preventDefault();
-                if (currentView === 'grid') {
-                    renderViewerView();
+                if (currentView === 'collections') {
+                    // Navigate collections down
+                    const collectionItems = container.querySelectorAll('.gallery-collection-item');
+                    if (selectedCollectionIndex < 0 && collectionItems.length > 0) {
+                        updateCollectionSelection(0);
+                    } else if (selectedCollectionIndex < collectionItems.length - 1) {
+                        updateCollectionSelection(selectedCollectionIndex + 1);
+                    }
+                } else if (currentView === 'grid') {
+                    // Navigate grid down
+                    const { cols } = getGridDimensions();
+                    const gridItems = container.querySelectorAll('.gallery-grid-item');
+                    if (selectedGridIndex < 0 && gridItems.length > 0) {
+                        updateGridSelection(0);
+                    } else if (selectedGridIndex + cols < gridItems.length) {
+                        updateGridSelection(selectedGridIndex + cols);
+                    } else {
+                        // At bottom, switch to viewer
+                        renderViewerView();
+                    }
                 } else if (currentView === 'viewer') {
                     renderCollectionsView();
                 }
@@ -462,9 +618,21 @@ const Gallery = (function() {
         }
     }
 
+    // Handle mouse movement - switch back to mouse mode
+    function handleMouseMove() {
+        if (usingKeyboard) {
+            usingKeyboard = false;
+            updateCollectionSelection(-1);
+            updateGridSelection(-1);
+        }
+    }
+
     // Initialize keyboard listener
     // Use capture phase to ensure this runs before other handlers
     document.addEventListener('keydown', handleKeyDown, true);
+
+    // Listen for mouse movement to switch back to mouse mode
+    document.addEventListener('mousemove', handleMouseMove, { passive: true });
 
     // Handle back navigation (called by router)
     function handleBack() {

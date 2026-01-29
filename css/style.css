@@ -180,6 +180,7 @@ body {
     grid-area: center;
     flex-direction: column;
     cursor: default;
+    position: relative;
 }
 
 .center-cell h1 {
@@ -451,4 +452,60 @@ body {
 .post-view {
     overflow: auto;
     height: 100vh;
+}
+
+/* ============================================
+   Keyboard Focus Indicator
+   ============================================ */
+.grid-cell.keyboard-focus {
+    background-color: var(--hover-bg);
+    outline: 2px solid var(--text-color);
+    outline-offset: -2px;
+}
+
+/* ============================================
+   Keyboard Navigation Hint
+   ============================================ */
+.keyboard-hint {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    font-size: 0.7rem;
+    color: var(--text-color);
+    opacity: 0.5;
+}
+
+.key-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.5rem;
+    height: 1.5rem;
+    padding: 0.2rem 0.35rem;
+    border: 1px solid var(--text-color);
+    border-radius: 3px;
+}
+
+.key-box.key-text {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+/* Hide on mobile/touch devices */
+@media (max-width: 768px) {
+    .keyboard-hint {
+        display: none;
+    }
+}
+
+@media (hover: none) {
+    .keyboard-hint {
+        display: none;
+    }
 }
