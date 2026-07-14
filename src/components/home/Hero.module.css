@@ -1,0 +1,88 @@
+/* wrap gives the white border: content-width + gutters on the sides,
+   a little breathing room top (clears the burger) and bottom */
+.wrap {
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding: clamp(0.75rem, 2vw, 1.5rem) var(--gutter) clamp(2rem, 5vw, 4rem);
+}
+
+.hero {
+  position: relative;
+  width: 100%;
+  height: min(86vh, 840px);
+  overflow: hidden;
+  border-radius: var(--radius);
+  isolation: isolate;
+  display: flex;
+  align-items: flex-end;
+}
+
+.bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  z-index: 0;
+  animation: kenburns 16s var(--ease) both;
+}
+
+/* scrim keeps white type legible over the photo */
+.scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(to top, rgba(12, 12, 11, 0.72) 0%, rgba(12, 12, 11, 0.28) 34%, rgba(12, 12, 11, 0) 62%),
+    linear-gradient(to bottom, rgba(12, 12, 11, 0.3) 0%, rgba(12, 12, 11, 0) 20%);
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  color: #f6f5f2;
+  padding: clamp(1.5rem, 4vw, 3rem);
+}
+
+.masthead {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.86;
+  font-size: clamp(2.6rem, 9vw, 8rem);
+  text-transform: none;
+  text-shadow: 0 2px 40px rgba(0, 0, 0, 0.35);
+}
+
+.subhead {
+  max-width: 34ch;
+  margin-top: clamp(0.9rem, 2vw, 1.4rem);
+  font-size: var(--t-lead);
+  line-height: 1.4;
+  color: rgba(246, 245, 242, 0.92);
+}
+
+.cta { display: flex; gap: 1.6rem; margin-top: clamp(1rem, 2.5vw, 1.6rem); flex-wrap: wrap; }
+.ctaLink {
+  font-family: var(--f-mono); font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: #fff; padding-bottom: 0.3rem; border-bottom: 1px solid rgba(246, 245, 242, 0.65);
+  transition: border-color 0.2s, opacity 0.2s;
+}
+.ctaLink:hover { opacity: 0.75; border-color: #fff; }
+
+@keyframes kenburns {
+  from { transform: scale(1.06); }
+  to { transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) { .bg { animation: none; } }
+
+@media (max-width: 720px) {
+  .hero { height: min(80vh, 680px); }
+  .subhead { max-width: 40ch; }
+}

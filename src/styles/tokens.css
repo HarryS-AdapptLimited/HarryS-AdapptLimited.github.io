@@ -1,0 +1,41 @@
+/* ============================================================
+   Design tokens — committed light theme (A24-inspired, B&W).
+   Photography is the only colour on the page; the UI is neutral
+   warm-grey/ink so images never fight the chrome.
+   ============================================================ */
+:root {
+  /* Ground & ink (deliberately warm-neutral, not cream) */
+  --paper:      #f6f6f4;
+  --paper-2:    #ecebe6;   /* subtle raised surface */
+  --ink:        #14130f;   /* near-black, warm */
+  --ink-soft:   #6a685f;   /* muted labels / captions */
+  --line:       #d9d7cf;   /* hairlines */
+  --line-strong:#14130f;   /* structural rules */
+  --film:       #0d0d0c;   /* image letterbox / poster bg */
+  --focus:      #14130f;
+
+  /* Type */
+  --f-display: "Schibsted Grotesk Variable", "Schibsted Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --f-body:    "Schibsted Grotesk Variable", "Schibsted Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --f-mono:    ui-monospace, "SF Mono", "Roboto Mono", Menlo, Consolas, monospace;
+
+  /* Fluid type scale */
+  --t-mono:   0.72rem;                          /* micro labels */
+  --t-small:  0.9rem;
+  --t-body:   clamp(1rem, 0.96rem + 0.2vw, 1.12rem);
+  --t-lead:   clamp(1.15rem, 1.05rem + 0.5vw, 1.5rem);
+  --t-h3:     clamp(1.5rem, 1.2rem + 1.6vw, 2.4rem);
+  --t-h2:     clamp(2rem, 1.4rem + 3vw, 3.6rem);
+  --t-hero:   clamp(2.6rem, 1.4rem + 6vw, 6.5rem);
+
+  /* Space & layout */
+  --maxw:      1240px;
+  --gutter:    clamp(1rem, 4vw, 3rem);
+  --radius:    2px;
+
+  /* Motion */
+  --ease:      cubic-bezier(0.2, 0.7, 0.2, 1);
+  --dur:       0.5s;
+
+  color-scheme: light;
+}

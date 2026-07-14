@@ -1,0 +1,73 @@
+{
+  "hero": {
+    "image": "/photos/frame-08.jpg",
+    "title": "Harry Stanyer",
+    "subhead": "Photographer, engineer & documentary maker — pictures from the road, and the things I build between trips.",
+    "primaryCta": {
+      "label": "See my photos",
+      "to": "/photos"
+    },
+    "secondaryCta": {
+      "label": "Try my tools",
+      "to": "/tools"
+    }
+  },
+  "blocks": [
+    {
+      "type": "marquee",
+      "items": [
+        "Photography",
+        "Film",
+        "Software",
+        "Field notes",
+        "The road",
+        "Design"
+      ]
+    },
+    {
+      "type": "feature",
+      "image": "/photos/china-07.jpg",
+      "kicker": "Photo Gallery · China",
+      "title": "Guilin Mountains",
+      "href": "/china",
+      "ratio": "16/9"
+    },
+    {
+      "type": "grid",
+      "label": "Recent work",
+      "title": "Selected",
+      "href": "/work",
+      "hrefLabel": "Index →",
+      "source": "featured",
+      "limit": 8
+    },
+    {
+      "type": "split",
+      "heading": "Always on the move, taking my camera and laptop everywhere I go.",
+      "body": "",
+      "image": "/photos/frame-06.jpg",
+      "imageCaption": "Kazbegi, Georgia",
+      "href": "/work",
+      "reverse": false
+    },
+    {
+      "type": "diptych",
+      "left": {
+        "src": "/photos/hanoi-01.jpg",
+        "caption": "Hanoi, Vietnam",
+        "href": "/hanoi"
+      },
+      "right": {
+        "src": "/photos/japan-22.jpg",
+        "caption": "Kamakura, Japan",
+        "href": "/japan"
+      }
+    },
+    {
+      "type": "statement",
+      "text": "Check out some more of my work",
+      "ctaLabel": "See all the work",
+      "ctaTo": "/work"
+    }
+  ]
+}

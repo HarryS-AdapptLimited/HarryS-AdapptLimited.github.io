@@ -1,0 +1,87 @@
+/* Fixed burger, top-left — no box, no background, just icon + word */
+.burger {
+  position: fixed;
+  top: 1.4rem;
+  left: 1.4rem;
+  z-index: 210;
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--ink);
+  /* thin solid white outline around the icon + text (no box, no glow) */
+  filter:
+    drop-shadow(1px 0 0 #fff) drop-shadow(-1px 0 0 #fff)
+    drop-shadow(0 1px 0 #fff) drop-shadow(0 -1px 0 #fff);
+}
+
+.bars { display: inline-flex; flex-direction: column; gap: 5px; width: 24px; }
+.bars i { display: block; height: 3px; width: 100%; background: currentColor; border-radius: 2px; transition: transform 0.3s var(--ease), opacity 0.2s; }
+.burgerOpen .bars i:first-child { transform: translateY(4px) rotate(45deg); }
+.burgerOpen .bars i:last-child { transform: translateY(-4px) rotate(-45deg); }
+
+.burgerText {
+  font-family: var(--f-mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 6rem;
+  margin-left: 0.6rem;
+  opacity: 1;
+  transition: max-width 0.35s var(--ease), opacity 0.25s var(--ease), margin-left 0.35s var(--ease);
+}
+
+/* once scrolled, collapse the word to just the icon … */
+.collapsed .burgerText { max-width: 0; opacity: 0; margin-left: 0; }
+/* … and bring it back on hover / focus */
+.collapsed:hover .burgerText,
+.collapsed:focus-visible .burgerText { max-width: 6rem; opacity: 1; margin-left: 0.6rem; }
+
+/* Full-screen overlay menu */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--paper);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(2rem, 8vw, 6rem) var(--gutter) 2rem;
+  animation: fade 0.28s var(--ease);
+}
+.nav { display: flex; flex-direction: column; }
+.link {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(0.8rem, 2vw, 1.6rem);
+  padding: clamp(0.5rem, 1.6vw, 1rem) 0;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: clamp(2.6rem, 11vw, 6rem);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--ink);
+  animation: rise 0.5s var(--ease) both;
+  animation-delay: calc(var(--i) * 0.06s + 0.05s);
+  transition: color 0.2s var(--ease), padding-left 0.3s var(--ease);
+}
+.link:hover { padding-left: clamp(0.5rem, 2vw, 1.5rem); }
+.link .num { font-family: var(--f-mono); font-size: 0.8rem; font-weight: 400; letter-spacing: 0.1em; color: var(--ink-soft); }
+.active .label { text-decoration: underline; text-underline-offset: 0.12em; text-decoration-thickness: 2px; }
+
+.meta {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+  margin-top: clamp(1.5rem, 4vw, 3rem);
+  font-family: var(--f-mono); font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft);
+}
+.social { display: flex; gap: 1.2rem; }
+.social a { transition: color 0.2s var(--ease); }
+.social a:hover { color: var(--ink); }
+
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }

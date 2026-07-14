@@ -1,0 +1,26 @@
+.card { display: block; }
+.frame { position: relative; overflow: hidden; }
+.frame :global(img) { transition: transform 0.7s var(--ease), opacity 0.8s var(--ease); }
+.card:hover .frame :global(img) { transform: scale(1.045); }
+
+.num {
+  position: absolute; top: 0.6rem; left: 0.6rem; z-index: 2;
+  font-family: var(--f-mono); font-size: 0.62rem; letter-spacing: 0.12em;
+  color: #fff; mix-blend-mode: difference;
+}
+.placeholder { aspect-ratio: 3/4; background: var(--paper-2); }
+
+.cap {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem;
+  margin-top: 0.65rem;
+}
+.title { font-weight: 500; font-size: 0.98rem; letter-spacing: -0.005em; }
+.kind {
+  font-family: var(--f-mono); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-soft); white-space: nowrap; padding-top: 0.15rem;
+}
+.loc {
+  display: block; margin-top: 0.15rem;
+  font-family: var(--f-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-soft);
+}

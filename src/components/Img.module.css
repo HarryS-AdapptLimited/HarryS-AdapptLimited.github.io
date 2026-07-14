@@ -1,0 +1,21 @@
+.frame {
+  position: relative;
+  overflow: hidden;
+  background: var(--film);
+  width: 100%;
+}
+.frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  /* fade in on mount; `both` guarantees the final (visible) state sticks */
+  animation: imgIn 0.6s var(--ease) both;
+}
+@keyframes imgIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .frame img { animation: none; }
+}

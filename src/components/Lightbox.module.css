@@ -1,0 +1,37 @@
+.overlay {
+  position: fixed; inset: 0; z-index: 300;
+  background: rgba(10, 10, 9, 0.96);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: clamp(0.5rem, 2vw, 2rem);
+  padding: clamp(1rem, 4vw, 3rem);
+  animation: fade 0.25s var(--ease);
+}
+.close {
+  position: absolute; top: clamp(1rem, 3vw, 2rem); right: clamp(1rem, 3vw, 2rem); z-index: 2;
+  font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: #f2f0ea; opacity: 0.8;
+}
+.close:hover { opacity: 1; }
+.figure { margin: 0; max-height: 88vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.figure img { max-height: 82vh; width: auto; max-width: 100%; object-fit: contain; }
+.caption {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 1.5rem; width: 100%;
+  margin-top: 0.9rem; color: #cfcdc4;
+  font-family: var(--f-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
+}
+.count { white-space: nowrap; opacity: 0.7; }
+.nav {
+  font-size: 1.5rem; color: #f2f0ea; opacity: 0.75; padding: 1rem; line-height: 1;
+  transition: opacity 0.2s var(--ease);
+}
+.nav:hover { opacity: 1; }
+
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+@media (max-width: 720px) {
+  .overlay { grid-template-columns: 1fr; }
+  .nav { position: absolute; bottom: 1rem; z-index: 2; }
+  .prev { left: 1rem; } .next { right: 1rem; }
+}

@@ -1,1 +1,8 @@
 node_modules/
+dist/
+*.tsbuildinfo
+.DS_Store
+cms/vendor/
+
+# original full-res source photos live here; only the optimised public/photos ship
+/photos/

@@ -1,0 +1,2 @@
+.col { max-width: 720px; margin-inline: auto; }
+.cover { margin: clamp(1.5rem, 4vw, 2.5rem) 0; }

@@ -1,0 +1,170 @@
+# Decap CMS — local content editing.
+# Run `npm run cms` (starts the local git backend) alongside `npm run dev`,
+# then open /admin. Edits are written straight to your Markdown files and
+# images on disk; commit + push to publish.
+backend:
+  name: git-gateway
+  branch: main
+
+# local_backend + `npm run cms` (decap-server) = no auth, edits local files.
+local_backend: true
+
+# uploads are saved here …
+media_folder: "public/photos"
+# … and referenced in content by this path
+public_folder: "/photos"
+
+# a friendlier date for slugs/sorting
+slug:
+  encoding: "ascii"
+  clean_accents: true
+
+collections:
+  # ---------- Home page (block-based) ----------
+  - name: pages
+    label: Pages
+    files:
+      - name: home
+        label: Home page
+        file: src/content/home.json
+        description: "The hero and the stack of layout blocks. Drag blocks to reorder."
+        fields:
+          - label: "Hero"
+            name: hero
+            widget: object
+            fields:
+              - { label: "Background image", name: image, widget: image }
+              - { label: "Title (your name)", name: title, widget: string }
+              - { label: "Subheading", name: subhead, widget: text }
+              - label: "Primary button"
+                name: primaryCta
+                widget: object
+                fields:
+                  - { label: "Label", name: label, widget: string }
+                  - { label: "Links to (e.g. /work)", name: to, widget: string }
+              - label: "Secondary button"
+                name: secondaryCta
+                widget: object
+                required: false
+                fields:
+                  - { label: "Label", name: label, widget: string }
+                  - { label: "Links to", name: to, widget: string }
+          - label: "Sections (add / reorder / remove)"
+            name: blocks
+            widget: list
+            types:
+              - label: "Marquee (scrolling words)"
+                name: marquee
+                widget: object
+                fields:
+                  - { label: "Words", name: items, widget: list }
+              - label: "Full-bleed feature"
+                name: feature
+                widget: object
+                fields:
+                  - { label: "Image", name: image, widget: image }
+                  - { label: "Kicker", name: kicker, widget: string, required: false }
+                  - { label: "Title", name: title, widget: string }
+                  - { label: "Links to", name: href, widget: string }
+                  - { label: "Aspect ratio", name: ratio, widget: string, required: false, default: "16/9" }
+              - label: "Poster grid (entry cards)"
+                name: grid
+                widget: object
+                fields:
+                  - { label: "Kicker label", name: label, widget: string, required: false }
+                  - { label: "Heading", name: title, widget: string, default: "Selected" }
+                  - { label: "Heading links to", name: href, widget: string, required: false }
+                  - { label: "Heading link text", name: hrefLabel, widget: string, required: false, default: "Index →" }
+                  - { label: "Show entries from", name: source, widget: select, default: featured, options: [ { label: "Featured", value: featured }, { label: "All", value: all }, { label: "Work", value: creative }, { label: "Writing", value: writing }, { label: "Tools", value: tool } ] }
+                  - { label: "Max cards", name: limit, widget: number, required: false, value_type: int, default: 8 }
+              - label: "Split — statement + image"
+                name: split
+                widget: object
+                fields:
+                  - { label: "Heading", name: heading, widget: text }
+                  - { label: "Body", name: body, widget: text, required: false }
+                  - { label: "Image", name: image, widget: image }
+                  - { label: "Image caption", name: imageCaption, widget: string, required: false }
+                  - { label: "Links to", name: href, widget: string, required: false }
+                  - { label: "Image on left?", name: reverse, widget: boolean, default: false, required: false }
+              - label: "Diptych (two portraits)"
+                name: diptych
+                widget: object
+                fields:
+                  - label: "Left"
+                    name: left
+                    widget: object
+                    fields:
+                      - { label: "Image", name: src, widget: image }
+                      - { label: "Caption", name: caption, widget: string, required: false }
+                      - { label: "Links to", name: href, widget: string, required: false }
+                  - label: "Right"
+                    name: right
+                    widget: object
+                    fields:
+                      - { label: "Image", name: src, widget: image }
+                      - { label: "Caption", name: caption, widget: string, required: false }
+                      - { label: "Links to", name: href, widget: string, required: false }
+              - label: "Triple strip (three images)"
+                name: triple
+                widget: object
+                fields:
+                  - label: "Images"
+                    name: images
+                    widget: list
+                    fields:
+                      - { label: "Image", name: src, widget: image }
+                      - { label: "Caption", name: caption, widget: string, required: false }
+                      - { label: "Aspect ratio", name: ratio, widget: string, required: false }
+              - label: "Index list"
+                name: index
+                widget: object
+                fields:
+                  - { label: "Kicker label", name: label, widget: string, required: false }
+                  - { label: "Heading", name: title, widget: string, default: "Everything" }
+                  - { label: "Show entries from", name: source, widget: select, default: all, options: [ { label: "All", value: all }, { label: "Featured", value: featured }, { label: "Work", value: creative }, { label: "Writing", value: writing }, { label: "Tools", value: tool } ] }
+              - label: "Statement (big line)"
+                name: statement
+                widget: object
+                fields:
+                  - { label: "Text", name: text, widget: text }
+                  - { label: "Button label", name: ctaLabel, widget: string, required: false }
+                  - { label: "Button links to", name: ctaTo, widget: string, required: false }
+
+  # ---------- Entries ----------
+  - name: entries
+    label: Entries
+    label_singular: Entry
+    description: "Photo essays, galleries, films, writing and tool case-studies."
+    folder: src/content/entries
+    create: true
+    slug: "{{fields.slug}}"
+    summary: "{{title}}  ·  {{type}}/{{template}}  ·  {{date}}"
+    sortable_fields: [date, title, type]
+    fields:
+      - { label: "Title", name: title, widget: string }
+      - { label: "Slug (URL, e.g. koh-tao)", name: slug, widget: string, pattern: ['^[a-z0-9-]+$', "lowercase letters, numbers and dashes only"] }
+      - { label: "Date", name: date, widget: datetime, date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
+      - { label: "Section", name: type, widget: select, options: [ { label: "Work (photo/film)", value: creative }, { label: "Tools", value: tool }, { label: "Writing", value: writing } ] }
+      - { label: "Layout template", name: template, widget: select, options: [ { label: "Photo essay", value: photo-essay }, { label: "Gallery", value: gallery }, { label: "Video / film", value: video }, { label: "Article", value: article }, { label: "Tool case-study", value: tool } ] }
+      - { label: "Feature on home page?", name: featured, widget: boolean, default: false, required: false }
+      - { label: "Excerpt / standfirst", name: excerpt, widget: text, required: false }
+      - { label: "Location", name: location, widget: string, required: false }
+      - { label: "Cover image", name: cover, widget: image, required: false, hint: "Shown on cards and as the social preview." }
+      - { label: "Tags", name: tags, widget: list, required: false }
+      - label: "Images (gallery / photo-essay)"
+        name: images
+        widget: list
+        required: false
+        summary: "{{fields.caption}}"
+        fields:
+          - { label: "Image", name: src, widget: image }
+          - { label: "Caption", name: caption, widget: string, required: false }
+          - { label: "Aspect ratio", name: ratio, widget: string, required: false, hint: "e.g. 3/4 (portrait) or 3/2 (landscape)" }
+      - { label: "Video URL (film template)", name: video, widget: string, required: false }
+      - { label: "Video poster", name: poster, widget: image, required: false }
+      - { label: "Launch URL (tool template)", name: launch, widget: string, required: false }
+      - { label: "Source URL (tool template)", name: source, widget: string, required: false }
+      - { label: "Tech stack (tool template)", name: tech, widget: list, required: false }
+      - { label: "Draft (hide from site)", name: draft, widget: boolean, default: false, required: false }
+      - { label: "Body", name: body, widget: markdown }

@@ -1,0 +1,4 @@
+.player { margin: clamp(1rem, 3vw, 2rem) 0; background: var(--film); border-radius: var(--radius); overflow: hidden; }
+.video { width: 100%; display: block; aspect-ratio: 16/9; background: var(--film); }
+.missing { color: var(--ink-soft); padding: 3rem 0; }
+.meta { max-width: 680px; margin-top: clamp(1.5rem, 4vw, 2.5rem); }

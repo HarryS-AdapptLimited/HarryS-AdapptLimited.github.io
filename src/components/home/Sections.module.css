@@ -1,0 +1,119 @@
+/* shared caption */
+.cap { margin-top: 0.55rem; font-family: var(--f-mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); }
+
+/* section heading / divider */
+.headingRow {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 1rem;
+  border-top: 1px solid var(--line-strong); padding-top: 1rem;
+  margin-bottom: clamp(1.2rem, 3vw, 2rem);
+}
+.h2 { font-size: var(--t-h2); margin-top: 0.3rem; }
+.seeAll { font-family: var(--f-mono); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); white-space: nowrap; }
+.seeAll:hover { color: var(--ink); }
+
+/* ---- Marquee ---- */
+.marquee { overflow: hidden; border-block: 1px solid var(--line-strong); padding: clamp(0.8rem, 2vw, 1.4rem) 0; }
+.marqueeTrack { display: flex; width: max-content; gap: 0; animation: scroll 32s linear infinite; }
+.marqueeItem {
+  display: inline-flex; align-items: center; gap: 1.4rem; padding-right: 1.4rem;
+  font-family: var(--f-display); font-weight: 600; font-size: clamp(1.6rem, 4vw, 3rem);
+  letter-spacing: -0.02em; text-transform: uppercase; white-space: nowrap;
+}
+.dot { font-size: 0.5em; color: var(--ink-soft); font-style: normal; }
+@keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .marqueeTrack { animation: none; } }
+
+/* ---- Full-bleed feature (text overlaid on the image) ---- */
+.feature { margin-block: clamp(2rem, 5vw, 4rem); }
+.featureLink { display: block; }
+.featureImg { position: relative; width: 100%; overflow: hidden; isolation: isolate; }
+.featureImg :global(img) { transition: transform 0.9s var(--ease); }
+.featureLink:hover .featureImg :global(img) { transform: scale(1.03); }
+
+.featureScrim {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(to top, rgba(12, 12, 11, 0.72) 0%, rgba(12, 12, 11, 0.2) 42%, rgba(12, 12, 11, 0) 68%);
+}
+.featureOverlay {
+  position: absolute; inset: 0; z-index: 2;
+  display: flex; align-items: flex-end;
+}
+.featureCaption {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 0.4rem;
+  padding-bottom: clamp(1.3rem, 4vw, 2.6rem);
+  color: #f6f5f2;
+}
+.featureKicker { font-family: var(--f-mono); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(246, 245, 242, 0.85); }
+.featureTitle { font-size: clamp(1.8rem, 5vw, 3.4rem); font-weight: 600; letter-spacing: -0.02em; color: #fff; text-shadow: 0 2px 30px rgba(0, 0, 0, 0.35); }
+.featureCue { font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(246, 245, 242, 0.9); }
+.featureLink:hover .featureCue { color: #fff; }
+
+/* ---- Split statement ---- */
+.split {
+  display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(1.5rem, 5vw, 4rem);
+  align-items: center; margin-block: clamp(3rem, 8vw, 6rem);
+}
+.splitReverse { grid-template-columns: 0.9fr 1.1fr; }
+.splitText { align-self: center; }
+.splitHeading { font-size: clamp(1.8rem, 4.5vw, 3.2rem); font-weight: 600; letter-spacing: -0.02em; line-height: 1.05; }
+.splitHeading em { font-style: italic; }
+.splitBody { color: var(--ink-soft); font-size: var(--t-lead); max-width: 42ch; margin-top: 1.2rem; line-height: 1.5; }
+.splitFig { margin: 0; }
+.textLink, .statementCta {
+  display: inline-block; margin-top: 1.6rem;
+  font-family: var(--f-mono); font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase;
+  border-bottom: 1px solid var(--line-strong); padding-bottom: 0.3rem;
+}
+.textLink:hover, .statementCta:hover { opacity: 0.55; }
+
+/* ---- Diptych ---- */
+.diptych { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(0.8rem, 2vw, 1.6rem); margin-block: clamp(2rem, 5vw, 3.5rem); }
+.diptychLink { display: block; }
+.diptychFig { margin: 0; }
+.diptychFig :global(img), .tripleFig :global(img) { transition: transform 0.8s var(--ease); }
+.diptychLink:hover .diptychFig :global(img) { transform: scale(1.03); }
+
+/* ---- Triple strip ---- */
+.triple { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(0.8rem, 2vw, 1.4rem); margin-block: clamp(2rem, 5vw, 3.5rem); align-items: start; }
+.triple .tripleFig:nth-child(2) { margin-top: clamp(1.5rem, 5vw, 4rem); } /* offset middle for rhythm */
+.tripleFig { margin: 0; }
+
+/* ---- Poster grid ---- */
+.posterSection { margin-block: clamp(2rem, 5vw, 3.5rem); }
+.posterGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(0.8rem, 2vw, 1.4rem) clamp(0.8rem, 1.6vw, 1.2rem);
+}
+@media (max-width: 900px) { .posterGrid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 720px) { .posterGrid { grid-template-columns: repeat(2, 1fr); } }
+
+/* ---- Index list ---- */
+.index { margin-block: clamp(2rem, 5vw, 3.5rem); border-top: 1px solid var(--line-strong); }
+.indexRow {
+  display: grid; grid-template-columns: 3rem 1fr auto 1.5rem; gap: 1rem; align-items: baseline;
+  padding: clamp(0.9rem, 2vw, 1.3rem) 0.2rem; border-bottom: 1px solid var(--line);
+  transition: padding-left 0.25s var(--ease), background 0.25s var(--ease);
+}
+.indexRow:hover { padding-left: 0.9rem; background: var(--paper-2); }
+.indexNum { font-family: var(--f-mono); font-size: 0.8rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.indexTitle { font-size: clamp(1.2rem, 3vw, 1.9rem); font-weight: 600; letter-spacing: -0.01em; }
+.indexKind { font-family: var(--f-mono); font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
+.indexArrow { color: var(--ink-soft); }
+.indexRow:hover .indexArrow { color: var(--ink); }
+
+/* ---- Statement ---- */
+.statement { margin-block: clamp(3rem, 9vw, 7rem); text-align: center; }
+.statementText {
+  font-family: var(--f-display); font-weight: 600;
+  font-size: clamp(1.6rem, 4.5vw, 3.2rem); letter-spacing: -0.02em; line-height: 1.15;
+  max-width: 24ch; margin-inline: auto; text-wrap: balance;
+}
+.statementCta { margin-top: 2rem; }
+
+@media (max-width: 720px) {
+  .split, .splitReverse, .diptych, .triple { grid-template-columns: 1fr; }
+  .triple .tripleFig:nth-child(2) { margin-top: 0; }
+  .indexRow { grid-template-columns: 2.2rem 1fr 1rem; }
+  .indexKind { display: none; }
+}

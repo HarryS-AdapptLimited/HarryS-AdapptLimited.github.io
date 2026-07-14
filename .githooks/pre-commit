@@ -1,0 +1,9 @@
+#!/bin/sh
+# Optimise newly-added photos, refresh thumbnails + ratio manifest, and stage the
+# results so only the efficient versions ever get committed. No-op when nothing changed.
+if [ ! -d node_modules ]; then
+  echo "pre-commit: node_modules missing — skipping photo optimisation"
+  exit 0
+fi
+npm run photos --silent || exit 1
+git add public/photos src/lib/photo-ratios.json

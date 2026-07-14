@@ -1,6 +1,40 @@
 {
-  "devDependencies": {
+  "name": "harrystanyer-site",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "prepare": "git config core.hooksPath .githooks || true",
+    "build": "npm run photos && tsc --noEmit && vite build && cp dist/index.html dist/404.html && npm run prerender",
+    "preview": "vite preview",
+    "prerender": "node scripts/prerender.mjs",
+    "cms:assets": "rm -rf cms/vendor && mkdir -p cms/vendor && cp node_modules/decap-cms/dist/*.js cms/vendor/",
+    "cms": "npm run cms:assets && decap-server",
+    "new-entry": "node scripts/new-entry.mjs",
+    "optimize": "node scripts/optimize-images.mjs",
+    "import-trips": "node scripts/import-trips.mjs",
+    "thumbs": "node scripts/thumbs.mjs",
+    "manifest": "node scripts/photo-manifest.mjs",
+    "photos": "npm run optimize && npm run thumbs && npm run manifest"
+  },
+  "dependencies": {
+    "@fontsource-variable/schibsted-grotesk": "^5.1.0",
+    "js-yaml": "^4.1.0",
     "marked": "^17.0.1",
-    "puppeteer": "^24.36.1"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "decap-cms": "^3.14.1",
+    "decap-server": "^3.9.1",
+    "puppeteer": "^24.36.1",
+    "sharp": "^0.35.3",
+    "typescript": "~5.6.3",
+    "vite": "^6.0.7"
   }
 }

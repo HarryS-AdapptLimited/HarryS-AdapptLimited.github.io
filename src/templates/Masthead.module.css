@@ -1,0 +1,12 @@
+.head { padding: clamp(1.5rem, 4vw, 2.5rem) 0 clamp(1rem, 3vw, 1.8rem); }
+.center { text-align: center; margin-inline: auto; max-width: 44ch; }
+.center .lead { margin-inline: auto; }
+.back {
+  display: inline-block; margin-bottom: 1.4rem;
+  font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-soft); transition: color 0.2s var(--ease);
+}
+.back:hover { color: var(--ink); }
+.title { font-size: var(--t-h2); margin-top: 0.8rem; max-width: 20ch; }
+.center .title { max-width: none; }
+.lead { font-size: var(--t-lead); color: var(--ink-soft); max-width: 52ch; margin-top: 1rem; line-height: 1.5; }
