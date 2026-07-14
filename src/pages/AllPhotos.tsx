@@ -49,6 +49,7 @@ export default function AllPhotos() {
   const [offset, setOffset] = useState({ x: 0, y: 0 })
   const [selected, setSelected] = useState<{ photo: WallPhoto; index: number } | null>(null)
   const [open, setOpen] = useState(false) // detail visible (drives blast + fade)
+  const [closing, setClosing] = useState(false) // blast is animating shut
   const [reduceMotion] = useState(() => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false)
 
   // "lens" magnify: whichever photo is nearest the centre of the screen is the
@@ -151,8 +152,9 @@ export default function AllPhotos() {
         cvx *= 0.94; cvy *= 0.94
         offsetRef.current.x += cvx
         offsetRef.current.y += cvy
-        scheduleRender()
-        if (Math.hypot(cvx, cvy) > 0.3) inertiaRef.current = requestAnimationFrame(step)
+        // update state directly in this rAF (no second scheduled frame → no stutter)
+        setOffset({ x: offsetRef.current.x, y: offsetRef.current.y })
+        if (Math.hypot(cvx, cvy) > 0.25) inertiaRef.current = requestAnimationFrame(step)
       }
       inertiaRef.current = requestAnimationFrame(step)
     }
@@ -161,13 +163,15 @@ export default function AllPhotos() {
   const selectPhoto = (photo: WallPhoto, index: number) => {
     if (drag.current.moved > 6) return // it was a pan, not a tap
     stopInertia()
+    setClosing(false)
     setSelected({ photo, index })
     // one tick later so the detail mounts closed, then transitions open (rAF can be paused)
     window.setTimeout(() => setOpen(true), 20)
   }
   const close = () => {
     setOpen(false)
-    window.setTimeout(() => setSelected(null), 450)
+    setClosing(true) // keep the transform transition on so tiles animate back
+    window.setTimeout(() => { setSelected(null); setClosing(false) }, 550)
   }
 
   // ---- visible tiles: fixed-height rows, natural widths, infinite in both axes ----
@@ -208,33 +212,35 @@ export default function AllPhotos() {
         const by = screenY + ROW_H / 2 - vp.h / 2
         // Fisheye: point-focus scale + per-axis integral push (rows bow locally,
         // spread tapers away from centre, cells still tile → no overlap).
-        let browseT = 'none'
-        let z = 1
+        let px = 0, py = 0, s = 1, z = 1
         if (lens) {
           const Rx = focusR * 1.2
           const Ry = focusR
           const hx = hAxis(bx, Rx)
           const hy = hAxis(by, Ry)
-          const s = 1 + B * Math.min(hx, hy)
-          const px = pushAxis(bx, Rx, hy) // horizontal push, vertical proximity fixed
-          const py = pushAxis(by, Ry, hx) // vertical push, horizontal proximity fixed
-          browseT = `translate3d(${px.toFixed(1)}px, ${py.toFixed(1)}px, 0) scale(${s.toFixed(3)})`
+          s = 1 + B * Math.min(hx, hy)
+          px = pushAxis(bx, Rx, hy) // horizontal push, vertical proximity fixed
+          py = pushAxis(by, Ry, hx) // vertical push, horizontal proximity fixed
           z = Math.round(s * 1000)
         }
+        // Position + fisheye are one GPU transform (sub-pixel smooth, no reflow).
+        const browseT = `translate3d(${(screenX + px).toFixed(2)}px, ${(screenY + py).toFixed(2)}px, 0) scale(${s.toFixed(3)})`
+        const blastT = `translate3d(${(screenX + bx * 1.9).toFixed(1)}px, ${(screenY + by * 1.9).toFixed(1)}px, 0) scale(0.45)`
         tiles.push(
           <button
             key={`${r}:${pi}:${k}`}
             className={styles.tile}
             style={{
-              left: screenX,
-              top: screenY,
+              left: 0,
+              top: 0,
               width: w,
               height: ROW_H,
-              transform: open ? `translate3d(${bx * 1.9}px, ${by * 1.9}px, 0) scale(.45)` : browseT,
+              transform: open ? blastT : browseT,
               opacity: open ? 0 : 1,
               zIndex: open ? undefined : z,
-              // blast animates; while browsing the magnify tracks the centre with a light ease
-              transition: open ? 'transform 0.6s cubic-bezier(0.2,0.7,0.2,1), opacity 0.5s ease' : undefined,
+              // transition ONLY while the blast opens/closes; panning is transition-free
+              // (instant transform tracking) so slow movement doesn't stutter
+              transition: open || closing ? 'transform 0.55s cubic-bezier(0.2,0.7,0.2,1), opacity 0.5s ease' : 'none',
             }}
             onClick={() => selectPhoto(photo, index)}
             tabIndex={-1}
