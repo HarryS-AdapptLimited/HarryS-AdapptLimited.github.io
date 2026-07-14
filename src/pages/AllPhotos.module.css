@@ -54,6 +54,31 @@
 }
 .detailOpen { opacity: 1; pointer-events: auto; }
 
+/* Explicit close affordance, top-right of the focus view. */
+.close {
+  position: fixed;
+  top: clamp(1rem, 3vw, 1.75rem);
+  right: clamp(1rem, 3vw, 1.75rem);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  background: color-mix(in srgb, var(--paper) 78%, transparent);
+  color: var(--ink);
+  cursor: pointer;
+  transform: scale(0.9);
+  opacity: 0;
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease), background 0.2s var(--ease);
+  transition-delay: 0.15s;
+}
+.detailOpen .close { opacity: 1; transform: scale(1); }
+.close:hover { background: var(--ink); color: var(--paper); }
+.close:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
 .detailFig {
   margin: 0;
   display: flex;
@@ -95,5 +120,5 @@
 .metaLink:hover { opacity: 0.6; }
 
 @media (prefers-reduced-motion: reduce) {
-  .tile, .detail, .detailFig, .meta { transition-duration: 0.001ms; }
+  .tile, .detail, .detailFig, .meta, .close { transition-duration: 0.001ms; }
 }

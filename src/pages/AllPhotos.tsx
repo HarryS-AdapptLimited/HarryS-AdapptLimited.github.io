@@ -272,6 +272,11 @@ export default function AllPhotos() {
 
       {sel && (
         <div className={`${styles.detail} ${open ? styles.detailOpen : ''}`} onClick={close}>
+          <button type="button" className={styles.close} onClick={close} aria-label="Close photo">
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+              <path d="M5 5 L19 19 M19 5 L5 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </button>
           <figure className={styles.detailFig}>
             <img className={styles.detailImg} src={sel.photo.src} alt={`Photograph from ${sel.photo.title}`} />
             <figcaption className={styles.meta}>
