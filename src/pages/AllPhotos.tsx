@@ -80,12 +80,15 @@ export default function AllPhotos() {
     inertiaRef.current = 0
   }
 
-  // lock page scroll while mounted
+  // lock page scroll while mounted; release to the default on unmount.
+  // (Don't capture/restore the prior value — if /photos is entered via the
+  // burger menu, the menu's own 'hidden' lock is still applied at mount, so a
+  // captured value would be 'hidden' and would freeze scrolling on whatever
+  // page we navigate to next. Matches Nav/Lightbox, which also reset to ''.)
   useEffect(() => {
-    const prev = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     return () => {
-      document.body.style.overflow = prev
+      document.body.style.overflow = ''
     }
   }, [])
 
