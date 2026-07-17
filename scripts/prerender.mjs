@@ -45,14 +45,14 @@ const routes = [
     path: `/${e.slug}`,
     title: `${e.title} — ${SITE}`,
     desc: e.excerpt ?? '',
-    image: e.cover ? abs(e.cover) : `${ORIGIN}/photos/me.png`,
+    image: e.cover ? abs(e.cover) : `${ORIGIN}/photos/frame-08.jpg`,
   })),
 ]
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;')
 
 function render(route) {
-  const image = route.image ?? `${ORIGIN}/photos/me.png`
+  const image = route.image ?? `${ORIGIN}/photos/frame-08.jpg`
   const url = ORIGIN + route.path
   let html = template
     .replace(/<title>[^<]*<\/title>/, `<title>${esc(route.title)}</title>`)

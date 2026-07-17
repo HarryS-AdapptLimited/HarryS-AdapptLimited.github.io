@@ -1,4 +1,4 @@
-import '@fontsource-variable/schibsted-grotesk'
+import '@fontsource-variable/outfit'
 import './styles/tokens.css'
 import './styles/global.css'
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useRoute } from '../lib/router'
+import Logo from './Logo'
 import styles from './Nav.module.css'
 
 const LINKS = [
@@ -45,6 +46,7 @@ export default function Nav() {
 
   return (
     <>
+      <Logo hidden={open} />
       <button
         className={`${styles.burger} ${open ? styles.burgerOpen : ''} ${collapsed ? styles.collapsed : ''}`}
         aria-expanded={open}

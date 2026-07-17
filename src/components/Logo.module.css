@@ -1,0 +1,22 @@
+/* Site mark, fixed to the top centre — mirrors the burger's vertical rhythm. */
+.logo {
+  position: fixed;
+  top: 1.15rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 205;
+  display: inline-flex;
+  color: var(--ink);
+  transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
+}
+
+.logo svg {
+  display: block;
+  height: 2.6rem;
+  width: auto;
+}
+
+.logo:hover { transform: translateX(-50%) scale(1.04); }
+
+/* Hidden while the full-screen menu is open (the overlay carries its own name) */
+.hidden { opacity: 0; pointer-events: none; }
