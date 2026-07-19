@@ -67,6 +67,25 @@ collections:
                   - { label: "Title", name: title, widget: string }
                   - { label: "Links to", name: href, widget: string }
                   - { label: "Aspect ratio", name: ratio, widget: string, required: false, default: "16/9" }
+              - label: "Sliced feature (vertical photo slices)"
+                name: slices
+                widget: object
+                fields:
+                  - { label: "Kicker", name: kicker, widget: string, required: false }
+                  - { label: "Title", name: title, widget: string }
+                  - { label: "Links to", name: href, widget: string, default: "/photos" }
+                  - { label: "Aspect ratio (overall height)", name: ratio, widget: string, required: false, default: "16/9" }
+                  - { label: "Gap between slices (px)", name: gap, widget: number, required: false, value_type: int, min: 0, default: 0 }
+                  - { label: "Expand slice on hover", name: hoverExpand, widget: boolean, required: false, default: true }
+                  - label: "Photos (each becomes a slice)"
+                    name: images
+                    widget: list
+                    summary: "{{fields.src}}"
+                    fields:
+                      - { label: "Image", name: src, widget: image }
+                      - { label: "Focal point", name: focus, widget: string, required: false, hint: "crop anchor, e.g. top, center, 50% 30%" }
+                      - { label: "Relative width", name: weight, widget: number, required: false, value_type: float, hint: "1 = equal; 2 = twice as wide" }
+                      - { label: "Caption (alt text)", name: caption, widget: string, required: false }
               - label: "Poster grid (entry cards)"
                 name: grid
                 widget: object

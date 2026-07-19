@@ -48,6 +48,51 @@
 .featureCue { font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(246, 245, 242, 0.9); }
 .featureLink:hover .featureCue { color: #fff; }
 
+/* ---- Sliced feature (N vertical slices, one shared height) ---- */
+.slices {
+  position: relative;
+  width: 100%;
+  display: flex;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--film);
+}
+.slice {
+  position: relative;
+  flex: var(--w, 1) 1 0;   /* equal columns unless a slice sets --w (weight) */
+  min-width: 0;
+  overflow: hidden;
+  transition: flex-grow 0.55s var(--ease);
+  /* staggered reveal on mount */
+  animation: sliceIn 0.7s var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 0.08s);
+}
+.slice img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.9s var(--ease);
+}
+.featureLink:hover .slice img { transform: scale(1.03); }
+
+/* accordion: on desktop, the hovered slice widens and its neighbours yield */
+@media (hover: hover) {
+  .slicesExpand:hover .slice { flex-grow: 0.7; }
+  .slicesExpand .slice:hover { flex-grow: 2.6; }
+  .slicesExpand .slice:hover img { transform: scale(1.04); }
+}
+
+@keyframes sliceIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .slice { animation: none; }
+  .slice, .slicesExpand:hover .slice, .slicesExpand .slice:hover { transition: none; }
+}
+
 /* ---- Split statement ---- */
 .split {
   display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(1.5rem, 5vw, 4rem);

@@ -25,12 +25,30 @@
       ]
     },
     {
-      "type": "feature",
-      "image": "/photos/china-07.jpg",
-      "kicker": "Photo Gallery · China",
-      "title": "Guilin Mountains",
-      "href": "/china",
-      "ratio": "16/9"
+      "type": "slices",
+      "kicker": "Selected · Photography",
+      "title": "Shots from the road",
+      "href": "/photos",
+      "ratio": "16/9",
+      "gap": 0,
+      "hoverExpand": true,
+      "images": [
+        {
+          "src": "/photos/georgia-08.jpg"
+        },
+        {
+          "src": "/photos/budapest-01.jpg"
+        },
+        {
+          "src": "/photos/frame-01.jpg"
+        },
+        {
+          "src": "/photos/frame-09.jpg"
+        },
+        {
+          "src": "/photos/china-04.jpg"
+        }
+      ]
     },
     {
       "type": "grid",

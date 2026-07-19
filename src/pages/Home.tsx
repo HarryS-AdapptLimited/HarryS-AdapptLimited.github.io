@@ -6,6 +6,7 @@ import Hero from '../components/home/Hero'
 import {
   Marquee,
   FeatureFull,
+  SlicedFeature,
   SplitStatement,
   Diptych,
   TripleStrip,
@@ -37,6 +38,19 @@ function renderBlock(b: Block, i: number) {
           title={b.title ?? ''}
           href={b.href ?? '/'}
           ratio={b.ratio}
+        />
+      )
+    case 'slices':
+      return (
+        <SlicedFeature
+          key={i}
+          images={b.images ?? []}
+          kicker={b.kicker}
+          title={b.title ?? ''}
+          href={b.href ?? '/photos'}
+          ratio={b.ratio}
+          gap={b.gap}
+          hoverExpand={b.hoverExpand}
         />
       )
     case 'grid':

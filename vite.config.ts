@@ -82,6 +82,14 @@ function cmsDevPlugin(): Plugin {
       server.middlewares.use((req, res, next) => {
         const url = (req.url ?? '').split('?')[0]
         if (url !== '/admin' && !url.startsWith('/admin/')) return next()
+        // `/admin` (no trailing slash) makes the page's relative asset URLs
+        // resolve against `/` (e.g. /vendor/decap-cms.js), which we don't serve —
+        // the bundle 404s and the page renders blank. Redirect to `/admin/`.
+        if (url === '/admin') {
+          res.statusCode = 301
+          res.setHeader('Location', '/admin/')
+          return res.end()
+        }
         let rel = url.slice('/admin'.length)
         if (rel === '' || rel === '/') rel = '/index.html'
         try {

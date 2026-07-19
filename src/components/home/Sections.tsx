@@ -1,7 +1,9 @@
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import { Link } from '../../lib/router'
 import Img from '../Img'
 import EntryCard from '../EntryCard'
+import { primarySrc, srcSet } from '../../lib/img'
+import type { ImageRef } from '../../lib/home'
 import { TEMPLATE_LABEL, type Entry } from '../../lib/types'
 import s from './Sections.module.css'
 
@@ -43,6 +45,61 @@ export function FeatureFull({ image, title, kicker, href, ratio = '21/9' }: {
       <Link to={href} className={s.featureLink}>
         <div className={s.featureImg}>
           <Img src={image} alt={title} ratio={ratio} sizes="100vw" />
+          <div className={s.featureScrim} aria-hidden="true" />
+          <div className={s.featureOverlay}>
+            <div className={`container ${s.featureCaption}`}>
+              {kicker && <span className={s.featureKicker}>{kicker}</span>}
+              <h3 className={s.featureTitle}>{title}</h3>
+              <span className={s.featureCue}>View →</span>
+            </div>
+          </div>
+        </div>
+      </Link>
+    </section>
+  )
+}
+
+/* ---------- Sliced feature: one banner, N vertical slices ----------
+   Same overall height as FeatureFull (a single `ratio` on the container),
+   but the width is divided into columns, each cropped to fill its slice.  */
+export function SlicedFeature({
+  images, title, kicker, href, ratio = '16/9', gap = 4, hoverExpand = true,
+}: {
+  images: ImageRef[]
+  title: string
+  kicker?: string
+  href: string
+  ratio?: string
+  gap?: number
+  hoverExpand?: boolean
+}) {
+  const slices = images.filter((im) => im?.src)
+  if (slices.length === 0) return null
+  const sizes = `${Math.max(10, Math.round(100 / slices.length))}vw`
+  return (
+    <section className={s.feature}>
+      <Link to={href} className={s.featureLink} aria-label={title}>
+        <div
+          className={`${s.slices} ${hoverExpand ? s.slicesExpand : ''}`}
+          style={{ aspectRatio: ratio, gap: `${gap}px` }}
+        >
+          {slices.map((im, i) => (
+            <div
+              key={`${im.src}-${i}`}
+              className={s.slice}
+              style={{ ['--w' as string]: im.weight ?? 1, ['--i' as string]: i } as CSSProperties}
+            >
+              <img
+                src={primarySrc(im.src)}
+                srcSet={srcSet(im.src)}
+                sizes={sizes}
+                alt={im.caption ?? ''}
+                loading="lazy"
+                decoding="async"
+                style={im.focus ? { objectPosition: im.focus } : undefined}
+              />
+            </div>
+          ))}
           <div className={s.featureScrim} aria-hidden="true" />
           <div className={s.featureOverlay}>
             <div className={`container ${s.featureCaption}`}>
